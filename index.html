@@ -8,875 +8,156 @@
   <meta name="apple-mobile-web-app-title" content="Training 2026" />
   <title>Training Plan 2026</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    html, body {
-      height: 100%;
-      background: #060609;
-      color: #f0f0f0;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
-      overscroll-behavior: none;
-    }
-
-    #app {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      max-width: 680px;
-      margin: 0 auto;
-    }
-
-    #header {
-      background: linear-gradient(160deg, #0c0c18, #111120);
-      border-bottom: 1px solid #ffffff14;
-      padding: env(safe-area-inset-top, 20px) 16px 16px;
-      flex-shrink: 0;
-    }
-
-    #content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 16px;
-      padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 80px);
-      -webkit-overflow-scrolling: touch;
-    }
-
-    #bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: rgba(10, 10, 20, 0.95);
-      backdrop-filter: blur(20px);
-      border-top: 1px solid #ffffff14;
-      display: flex;
-      padding: 8px 0 env(safe-area-inset-bottom, 8px);
-      z-index: 100;
-      max-width: 680px;
-      margin: 0 auto;
-    }
-
-    .nav-btn {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      padding: 6px 4px;
-      border: none;
-      background: none;
-      cursor: pointer;
-      color: #ffffff44;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
-
-    .nav-btn.active {
-      color: var(--phase-color, #a78bfa);
-    }
-
-    .nav-btn span.icon {
-      font-size: 20px;
-    }
-
-    #setup-screen {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 32px 24px;
-      gap: 24px;
-      text-align: center;
-    }
-
-    #setup-screen h1 {
-      font-size: 28px;
-      font-weight: 800;
-      background: linear-gradient(135deg, #fff, #a78bfa);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    #setup-screen p {
-      font-size: 14px;
-      color: #ffffff66;
-      line-height: 1.7;
-      max-width: 340px;
-    }
-
-    .setup-input {
-      width: 100%;
-      padding: 14px 16px;
-      background: #ffffff0a;
-      border: 1px solid #ffffff22;
-      border-radius: 12px;
-      color: #fff;
-      font-size: 15px;
-      font-family: monospace;
-      outline: none;
-    }
-
-    .setup-btn {
-      width: 100%;
-      padding: 16px;
-      background: #a78bfa;
-      border: none;
-      border-radius: 12px;
-      color: #000;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .setup-link {
-      font-size: 12px;
-      color: #ffffff44;
-      text-decoration: underline;
-      cursor: pointer;
-    }
-
-    .phase-chips {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-      scrollbar-width: none;
-    }
-
-    .phase-chips::-webkit-scrollbar {
-      display: none;
-    }
-
-    .phase-chip {
-      flex-shrink: 0;
-      padding: 6px 14px;
-      border-radius: 20px;
-      border: 1px solid;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      cursor: pointer;
-      text-transform: uppercase;
-      transition: all 0.2s;
-    }
-
-    .week-nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-      gap: 8px;
-    }
-
-    .week-nav-btn {
-      background: #ffffff0a;
-      border: 1px solid #ffffff14;
-      border-radius: 8px;
-      padding: 8px 14px;
-      font-size: 13px;
-      color: #ffffff88;
-      cursor: pointer;
-    }
-
-    .week-nav-btn:disabled {
-      opacity: 0.3;
-      cursor: default;
-    }
-
-    .week-info {
-      text-align: center;
-      flex: 1;
-    }
-
-    .week-label {
-      font-size: 14px;
-      font-weight: 700;
-      color: #ffffffcc;
-    }
-
-    .week-sub {
-      font-size: 11px;
-      color: #ffffff44;
-      margin-top: 2px;
-    }
-
-    .week-stats {
-      font-size: 11px;
-      margin-top: 2px;
-    }
-
-    .day-card {
-      border-radius: 14px;
-      border: 1px solid;
-      padding: 14px;
-      margin-bottom: 10px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .day-card-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .day-status-circle {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      border: 2px solid;
-      transition: all 0.2s;
-    }
-
-    .day-meta {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .day-tags {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-      margin-bottom: 3px;
-    }
-
-    .day-label {
-      font-size: 10px;
-      color: #ffffff44;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-
-    .tag-chip {
-      padding: 2px 7px;
-      border-radius: 5px;
-      border: 1px solid;
-      font-size: 9px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .duration-chip {
-      padding: 1px 7px;
-      border-radius: 5px;
-      background: #ffffff08;
-      border: 1px solid #ffffff12;
-      font-size: 9px;
-      color: #ffffff44;
-    }
-
-    .day-type {
-      font-size: 14px;
-      font-weight: 700;
-      line-height: 1.2;
-    }
-
-    .expand-arrow {
-      font-size: 12px;
-      color: #ffffff22;
-      flex-shrink: 0;
-    }
-
-    .day-expanded {
-      border-top: 1px solid #ffffff10;
-      padding-top: 14px;
-      margin-top: 14px;
-    }
-
-    .session-item {
-      font-size: 12px;
-      color: #ffffffaa;
-      line-height: 1.6;
-      margin-bottom: 5px;
-      padding-left: 10px;
-      border-left: 2px solid;
-    }
-
-    .ts-box {
-      background: #ffffff08;
-      border: 1px solid #ffffff14;
-      border-radius: 10px;
-      padding: 10px 12px;
-      margin-top: 10px;
-    }
-
-    .ts-label {
-      font-size: 9px;
-      color: #ffffff33;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 4px;
-    }
-
-    .ts-name {
-      font-size: 12px;
-      font-weight: 700;
-      color: #ffffffaa;
-      margin-bottom: 3px;
-    }
-
-    .ts-note {
-      font-size: 11px;
-      color: #ffffff55;
-      line-height: 1.5;
-    }
-
-    .coach-box {
-      border-radius: 10px;
-      padding: 10px 12px;
-      margin-top: 10px;
-      border: 1px solid;
-    }
-
-    .coach-label {
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 4px;
-      opacity: 0.8;
-    }
-
-    .coach-text {
-      font-size: 12px;
-      color: #ffffffbb;
-      line-height: 1.6;
-      font-style: italic;
-    }
-
-    .mark-btns {
-      display: flex;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .mark-btn {
-      flex: 1;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      background: transparent;
-      transition: all 0.15s;
-    }
-
-    .undo-btn {
-      width: 100%;
-      margin-top: 8px;
-      padding: 8px;
-      background: transparent;
-      border: 1px solid #ffffff14;
-      border-radius: 8px;
-      font-size: 11px;
-      color: #ffffff33;
-      cursor: pointer;
-    }
-
-    .log-form {
-      background: #ffffff08;
-      border: 1px solid #ffffff16;
-      border-radius: 12px;
-      padding: 14px;
-      margin-top: 12px;
-    }
-
-    .log-form-title {
-      font-size: 10px;
-      font-weight: 700;
-      color: #ffffff55;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 12px;
-    }
-
-    .log-fields {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .log-field {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .log-field label {
-      font-size: 10px;
-      color: #ffffff44;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: 600;
-    }
-
-    .log-input {
-      background: #ffffff0a;
-      border: 1px solid #ffffff1a;
-      border-radius: 8px;
-      padding: 8px 10px;
-      color: #ffffffcc;
-      font-size: 13px;
-      outline: none;
-      width: 100%;
-    }
-
-    .log-input:focus {
-      border-color: var(--phase-color, #a78bfa);
-    }
-
-    .log-textarea {
-      background: #ffffff0a;
-      border: 1px solid #ffffff1a;
-      border-radius: 8px;
-      padding: 8px 10px;
-      color: #ffffffcc;
-      font-size: 13px;
-      outline: none;
-      width: 100%;
-      resize: none;
-      height: 70px;
-      font-family: inherit;
-      line-height: 1.5;
-    }
-
-    .log-textarea:focus {
-      border-color: var(--phase-color, #a78bfa);
-    }
-
-    .log-textarea::placeholder {
-      color: #ffffff33;
-    }
-
-    .log-rpe {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .rpe-btn {
-      padding: 6px 10px;
-      border-radius: 6px;
-      border: 1px solid #ffffff18;
-      background: #ffffff08;
-      color: #ffffff66;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .rpe-btn.selected {
-      background: var(--phase-color, #a78bfa);
-      border-color: var(--phase-color, #a78bfa);
-      color: #000;
-    }
-
-    .log-save-btn {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 8px;
-      transition: all 0.2s;
-    }
-
-    .session-log-display {
-      background: #ffffff06;
-      border: 1px solid #ffffff10;
-      border-radius: 10px;
-      padding: 10px 12px;
-      margin-top: 10px;
-    }
-
-    .session-log-header {
-      font-size: 9px;
-      color: #ffffff33;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 8px;
-    }
-
-    .session-log-note {
-      font-size: 12px;
-      color: #ffffff88;
-      font-style: italic;
-      line-height: 1.6;
-      margin-bottom: 6px;
-    }
-
-    .session-log-metrics {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .metric-pill {
-      padding: 3px 10px;
-      border-radius: 20px;
-      background: #ffffff0a;
-      border: 1px solid #ffffff14;
-      font-size: 11px;
-      color: #ffffffcc;
-    }
-
-    .edit-log-btn {
-      font-size: 11px;
-      color: #ffffff33;
-      background: none;
-      border: none;
-      cursor: pointer;
-      margin-top: 8px;
-      text-decoration: underline;
-    }
-
-    .briefing-box {
-      background: #ffffff06;
-      border: 1px solid #ffffff12;
-      border-radius: 14px;
-      padding: 16px;
-      margin-top: 6px;
-    }
-
-    .briefing-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      gap: 8px;
-    }
-
-    .briefing-title {
-      font-size: 11px;
-      font-weight: 700;
-      color: #ffffff55;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-
-    .briefing-btn {
-      padding: 6px 12px;
-      border-radius: 8px;
-      border: 1px solid;
-      background: transparent;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .briefing-text {
-      font-size: 13px;
-      color: #ffffffaa;
-      line-height: 1.8;
-      font-style: italic;
-    }
-
-    .briefing-hint {
-      font-size: 12px;
-      color: #ffffff33;
-    }
-
-    .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .stat-card {
-      background: #ffffff07;
-      border: 1px solid #ffffff12;
-      border-radius: 12px;
-      padding: 14px;
-      text-align: center;
-    }
-
-    .stat-value {
-      font-size: 28px;
-      font-weight: 800;
-    }
-
-    .stat-label {
-      font-size: 9px;
-      color: #ffffff44;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-top: 2px;
-    }
-
-    .phase-stat {
-      background: #ffffff06;
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin-bottom: 10px;
-      border: 1px solid;
-    }
-
-    .phase-stat-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-      gap: 10px;
-    }
-
-    .phase-stat-name {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .phase-stat-detail {
-      font-size: 11px;
-      color: #ffffff44;
-      margin-top: 2px;
-    }
-
-    .phase-stat-rate {
-      font-size: 22px;
-      font-weight: 800;
-    }
-
-    .progress-bar {
-      height: 4px;
-      background: #ffffff0a;
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      border-radius: 2px;
-      transition: width 0.4s;
-    }
-
-    .log-entry {
-      background: #ffffff06;
-      border: 1px solid #ffffff10;
-      border-radius: 12px;
-      padding: 14px;
-      margin-bottom: 10px;
-    }
-
-    .log-entry-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 8px;
-      gap: 8px;
-    }
-
-    .log-entry-type {
-      font-size: 13px;
-      font-weight: 700;
-      color: #ffffffcc;
-    }
-
-    .log-entry-date {
-      font-size: 10px;
-      color: #ffffff44;
-      text-align: right;
-    }
-
-    .log-entry-note {
-      font-size: 12px;
-      color: #ffffff77;
-      font-style: italic;
-      line-height: 1.6;
-      margin-bottom: 6px;
-    }
-
-    .log-entry-metrics {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-    }
-
-    .sub-tabs {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 16px;
-      border-bottom: 1px solid #ffffff10;
-      padding-bottom: 0;
-    }
-
-    .sub-tab {
-      padding: 8px 14px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #ffffff44;
-      background: none;
-      border: none;
-      border-bottom: 2px solid transparent;
-      cursor: pointer;
-      transition: all 0.2s;
-      margin-bottom: -1px;
-    }
-
-    .sub-tab.active {
-      color: #fff;
-      border-bottom-color: var(--phase-color, #a78bfa);
-    }
-
-    .settings-section {
-      margin-bottom: 24px;
-    }
-
-    .settings-title {
-      font-size: 11px;
-      font-weight: 700;
-      color: #ffffff33;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 12px;
-    }
-
-    .settings-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #ffffff06;
-      border: 1px solid #ffffff12;
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin-bottom: 8px;
-      gap: 10px;
-    }
-
-    .settings-row-label {
-      font-size: 14px;
-      color: #ffffffcc;
-    }
-
-    .settings-row-sub {
-      font-size: 11px;
-      color: #ffffff44;
-      margin-top: 2px;
-    }
-
-    .settings-input {
-      background: #ffffff0a;
-      border: 1px solid #ffffff22;
-      border-radius: 8px;
-      padding: 8px 12px;
-      color: #fff;
-      font-size: 13px;
-      font-family: monospace;
-      outline: none;
-      width: 200px;
-    }
-
-    .settings-save-btn {
-      padding: 8px 16px;
-      border-radius: 8px;
-      border: none;
-      background: #4ade80;
-      color: #000;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .api-status {
-      font-size: 12px;
-      margin-top: 8px;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .section-title {
-      font-size: 11px;
-      font-weight: 700;
-      color: #ffffff33;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 14px;
-    }
-
-    .phase-header-card {
-      border-radius: 14px;
-      padding: 20px;
-      margin-bottom: 16px;
-      border: 1px solid;
-      overflow: hidden;
-    }
-
-    .event-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 12px;
-    }
-
-    .event-chip {
-      padding: 5px 12px;
-      border-radius: 8px;
-      border: 1px solid;
-      font-size: 11px;
-      font-weight: 600;
-    }
-
-    .overall-rate {
-      text-align: center;
-      background: #ffffff08;
-      border: 1px solid #ffffff14;
-      border-radius: 12px;
-      padding: 10px 16px;
-    }
-
-    .overall-rate-num {
-      font-size: 26px;
-      font-weight: 800;
-    }
-
-    .overall-rate-label {
-      font-size: 9px;
-      color: #ffffff44;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 40px 20px;
-      color: #ffffff33;
-    }
-
-    .reset-btn {
-      width: 100%;
-      margin-top: 16px;
-      padding: 12px;
-      background: transparent;
-      border: 1px solid #ff444422;
-      border-radius: 10px;
-      font-size: 12px;
-      color: #ff6666;
-      cursor: pointer;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html, body { height: 100%; background: #060609; color: #f0f0f0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif; overscroll-behavior: none; }
+
+    #app { display: flex; flex-direction: column; height: 100%; max-width: 680px; margin: 0 auto; }
+    #header { background: linear-gradient(160deg, #0c0c18, #111120); border-bottom: 1px solid #ffffff14; padding: env(safe-area-inset-top, 20px) 16px 16px; flex-shrink: 0; }
+    #content { flex: 1; overflow-y: auto; padding: 16px; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 80px); -webkit-overflow-scrolling: touch; }
+    #bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10,10,20,0.95); backdrop-filter: blur(20px); border-top: 1px solid #ffffff14; display: flex; padding: 8px 0 env(safe-area-inset-bottom, 8px); z-index: 100; max-width: 680px; margin: 0 auto; }
+    .nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 4px; border: none; background: none; cursor: pointer; color: #ffffff44; font-size: 10px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; transition: color 0.2s; }
+    .nav-btn.active { color: var(--phase-color, #a78bfa); }
+    .nav-btn span.icon { font-size: 20px; }
+
+    #setup-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 32px 24px; gap: 24px; text-align: center; }
+    #setup-screen h1 { font-size: 28px; font-weight: 800; background: linear-gradient(135deg, #fff, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    #setup-screen p { font-size: 14px; color: #ffffff66; line-height: 1.7; max-width: 340px; }
+    .setup-input { width: 100%; padding: 14px 16px; background: #ffffff0a; border: 1px solid #ffffff22; border-radius: 12px; color: #fff; font-size: 15px; font-family: monospace; outline: none; }
+    .setup-btn { width: 100%; padding: 16px; background: #a78bfa; border: none; border-radius: 12px; color: #000; font-size: 16px; font-weight: 700; cursor: pointer; }
+    .setup-link { font-size: 12px; color: #ffffff44; text-decoration: underline; cursor: pointer; }
+
+    .phase-chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+    .phase-chips::-webkit-scrollbar { display: none; }
+    .phase-chip { flex-shrink: 0; padding: 6px 14px; border-radius: 20px; border: 1px solid; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; cursor: pointer; text-transform: uppercase; transition: all 0.2s; }
+
+    .week-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 8px; }
+    .week-nav-btn { background: #ffffff0a; border: 1px solid #ffffff14; border-radius: 8px; padding: 8px 14px; font-size: 13px; color: #ffffff88; cursor: pointer; }
+    .week-nav-btn:disabled { opacity: 0.3; cursor: default; }
+    .week-info { text-align: center; flex: 1; }
+    .week-label { font-size: 14px; font-weight: 700; color: #ffffffcc; }
+    .week-sub { font-size: 11px; color: #ffffff44; margin-top: 2px; }
+    .week-stats { font-size: 11px; margin-top: 2px; }
+
+    .week-planner { border-radius: 14px; border: 1px solid; margin-bottom: 14px; overflow: hidden; transition: border-color 0.2s; }
+    .week-planner-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; cursor: pointer; gap: 10px; }
+    .week-planner-title { display: flex; align-items: center; gap: 8px; }
+    .week-planner-icon { font-size: 16px; }
+    .week-planner-label { font-size: 12px; font-weight: 700; color: #ffffffcc; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .week-planner-sub { font-size: 11px; color: #ffffff44; margin-top: 1px; }
+    .week-planner-badge { font-size: 9px; padding: 2px 8px; border-radius: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+    .week-planner-toggle { font-size: 12px; color: #ffffff33; }
+    .week-planner-body { padding: 0 14px 14px; border-top: 1px solid #ffffff10; }
+    .planner-hint { font-size: 12px; color: #ffffff44; margin: 12px 0 10px; line-height: 1.6; }
+    .constraint-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .constraint-chip { padding: 6px 12px; border-radius: 20px; border: 1px solid #ffffff18; background: #ffffff08; color: #ffffff66; font-size: 12px; cursor: pointer; transition: all 0.15s; user-select: none; }
+    .constraint-chip.selected { background: var(--phase-color, #a78bfa); border-color: var(--phase-color, #a78bfa); color: #000; font-weight: 600; }
+    .planner-textarea { width: 100%; background: #ffffff0a; border: 1px solid #ffffff1a; border-radius: 10px; padding: 10px 12px; color: #ffffffcc; font-size: 13px; outline: none; resize: none; height: 72px; font-family: inherit; line-height: 1.6; }
+    .planner-textarea:focus { border-color: var(--phase-color, #a78bfa); }
+    .planner-textarea::placeholder { color: #ffffff28; }
+    .planner-actions { display: flex; gap: 8px; margin-top: 10px; }
+    .planner-adapt-btn { flex: 1; padding: 11px; border-radius: 10px; border: none; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+    .planner-reset-btn { padding: 11px 14px; border-radius: 10px; border: 1px solid #ffffff18; background: transparent; color: #ffffff44; font-size: 12px; cursor: pointer; }
+
+    .adapted-banner { display: flex; align-items: center; justify-content: space-between; background: var(--phase-color-bg, #4ade8018); border: 1px solid var(--phase-color-border, #4ade8044); border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; gap: 10px; }
+    .adapted-banner-text { font-size: 12px; color: #ffffffaa; line-height: 1.5; }
+    .adapted-banner-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 2px; }
+    .adapted-banner-reset { font-size: 11px; color: #ffffff44; background: none; border: 1px solid #ffffff18; border-radius: 6px; padding: 4px 10px; cursor: pointer; flex-shrink: 0; }
+
+    .day-card { border-radius: 14px; border: 1px solid; padding: 14px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s; }
+    .day-card-header { display: flex; align-items: center; gap: 12px; }
+    .day-status-circle { width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; border: 2px solid; transition: all 0.2s; }
+    .day-meta { flex: 1; min-width: 0; }
+    .day-tags { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 3px; }
+    .day-label { font-size: 10px; color: #ffffff44; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
+    .tag-chip { padding: 2px 7px; border-radius: 5px; border: 1px solid; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+    .duration-chip { padding: 1px 7px; border-radius: 5px; background: #ffffff08; border: 1px solid #ffffff12; font-size: 9px; color: #ffffff44; }
+    .adapted-chip { padding: 1px 7px; border-radius: 5px; background: #a78bfa18; border: 1px solid #a78bfa44; font-size: 9px; color: #a78bfa; }
+    .day-type { font-size: 14px; font-weight: 700; line-height: 1.2; }
+    .expand-arrow { font-size: 12px; color: #ffffff22; flex-shrink: 0; }
+
+    .day-expanded { border-top: 1px solid #ffffff10; padding-top: 14px; margin-top: 14px; }
+    .session-item { font-size: 12px; color: #ffffffaa; line-height: 1.6; margin-bottom: 5px; padding-left: 10px; border-left: 2px solid; }
+    .session-item.adapted { color: #ffffffcc; }
+    .adapted-note { font-size: 11px; color: #a78bfa88; font-style: italic; margin-top: 6px; padding-left: 10px; }
+    .ts-box { background: #ffffff08; border: 1px solid #ffffff14; border-radius: 10px; padding: 10px 12px; margin-top: 10px; }
+    .ts-label { font-size: 9px; color: #ffffff33; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 4px; }
+    .ts-name { font-size: 12px; font-weight: 700; color: #ffffffaa; margin-bottom: 3px; }
+    .ts-note { font-size: 11px; color: #ffffff55; line-height: 1.5; }
+    .coach-box { border-radius: 10px; padding: 10px 12px; margin-top: 10px; border: 1px solid; }
+    .coach-label { font-size: 9px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 4px; opacity: 0.8; }
+    .coach-text { font-size: 12px; color: #ffffffbb; line-height: 1.6; font-style: italic; }
+    .mark-btns { display: flex; gap: 8px; margin-top: 12px; }
+    .mark-btn { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid; font-size: 13px; font-weight: 700; cursor: pointer; background: transparent; }
+    .undo-btn { width: 100%; margin-top: 8px; padding: 8px; background: transparent; border: 1px solid #ffffff14; border-radius: 8px; font-size: 11px; color: #ffffff33; cursor: pointer; }
+
+    .log-form { background: #ffffff08; border: 1px solid #ffffff16; border-radius: 12px; padding: 14px; margin-top: 12px; }
+    .log-form-title { font-size: 10px; font-weight: 700; color: #ffffff55; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; }
+    .log-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+    .log-field { display: flex; flex-direction: column; gap: 4px; }
+    .log-field label { font-size: 10px; color: #ffffff44; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+    .log-input { background: #ffffff0a; border: 1px solid #ffffff1a; border-radius: 8px; padding: 8px 10px; color: #ffffffcc; font-size: 13px; outline: none; width: 100%; }
+    .log-input:focus { border-color: var(--phase-color, #a78bfa); }
+    .log-textarea { background: #ffffff0a; border: 1px solid #ffffff1a; border-radius: 8px; padding: 8px 10px; color: #ffffffcc; font-size: 13px; outline: none; width: 100%; resize: none; height: 70px; font-family: inherit; line-height: 1.5; }
+    .log-textarea:focus { border-color: var(--phase-color, #a78bfa); }
+    .log-textarea::placeholder { color: #ffffff33; }
+    .log-rpe { display: flex; gap: 6px; flex-wrap: wrap; }
+    .rpe-btn { padding: 6px 10px; border-radius: 6px; border: 1px solid #ffffff18; background: #ffffff08; color: #ffffff66; font-size: 12px; font-weight: 700; cursor: pointer; }
+    .rpe-btn.selected { background: var(--phase-color, #a78bfa); border-color: var(--phase-color, #a78bfa); color: #000; }
+    .log-save-btn { width: 100%; padding: 10px; border-radius: 8px; border: none; font-size: 13px; font-weight: 700; cursor: pointer; margin-top: 8px; }
+
+    .session-log-display { background: #ffffff06; border: 1px solid #ffffff10; border-radius: 10px; padding: 10px 12px; margin-top: 10px; }
+    .session-log-header { font-size: 9px; color: #ffffff33; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+    .session-log-note { font-size: 12px; color: #ffffff88; font-style: italic; line-height: 1.6; margin-bottom: 6px; }
+    .session-log-metrics { display: flex; flex-wrap: wrap; gap: 6px; }
+    .metric-pill { padding: 3px 10px; border-radius: 20px; background: #ffffff0a; border: 1px solid #ffffff14; font-size: 11px; color: #ffffffcc; }
+    .edit-log-btn { font-size: 11px; color: #ffffff33; background: none; border: none; cursor: pointer; margin-top: 8px; text-decoration: underline; }
+
+    .briefing-box { background: #ffffff06; border: 1px solid #ffffff12; border-radius: 14px; padding: 16px; margin-top: 6px; }
+    .briefing-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 8px; }
+    .briefing-title { font-size: 11px; font-weight: 700; color: #ffffff55; text-transform: uppercase; letter-spacing: 2px; }
+    .briefing-btn { padding: 6px 12px; border-radius: 8px; border: 1px solid; background: transparent; font-size: 11px; font-weight: 700; cursor: pointer; }
+    .briefing-text { font-size: 13px; color: #ffffffaa; line-height: 1.8; font-style: italic; }
+    .briefing-hint { font-size: 12px; color: #ffffff33; }
+
+    .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+    .stat-card { background: #ffffff07; border: 1px solid #ffffff12; border-radius: 12px; padding: 14px; text-align: center; }
+    .stat-value { font-size: 28px; font-weight: 800; }
+    .stat-label { font-size: 9px; color: #ffffff44; text-transform: uppercase; letter-spacing: 2px; margin-top: 2px; }
+    .phase-stat { background: #ffffff06; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid; }
+    .phase-stat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 10px; }
+    .phase-stat-name { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+    .phase-stat-detail { font-size: 11px; color: #ffffff44; margin-top: 2px; }
+    .phase-stat-rate { font-size: 22px; font-weight: 800; }
+    .progress-bar { height: 4px; background: #ffffff0a; border-radius: 2px; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 2px; transition: width 0.4s; }
+    .log-entry { background: #ffffff06; border: 1px solid #ffffff10; border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+    .log-entry-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; gap: 8px; }
+    .log-entry-type { font-size: 13px; font-weight: 700; color: #ffffffcc; }
+    .log-entry-date { font-size: 10px; color: #ffffff44; text-align: right; }
+    .log-entry-note { font-size: 12px; color: #ffffff77; font-style: italic; line-height: 1.6; margin-bottom: 6px; }
+    .log-entry-metrics { display: flex; flex-wrap: wrap; gap: 5px; }
+    .sub-tabs { display: flex; gap: 6px; margin-bottom: 16px; border-bottom: 1px solid #ffffff10; }
+    .sub-tab { padding: 8px 14px; font-size: 12px; font-weight: 600; color: #ffffff44; background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; transition: all 0.2s; margin-bottom: -1px; }
+    .sub-tab.active { color: #fff; border-bottom-color: var(--phase-color, #a78bfa); }
+
+    .settings-section { margin-bottom: 24px; }
+    .settings-title { font-size: 11px; font-weight: 700; color: #ffffff33; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; }
+    .settings-row { display: flex; justify-content: space-between; align-items: center; background: #ffffff06; border: 1px solid #ffffff12; border-radius: 12px; padding: 14px 16px; margin-bottom: 8px; gap: 10px; }
+    .settings-row-label { font-size: 14px; color: #ffffffcc; }
+    .settings-row-sub { font-size: 11px; color: #ffffff44; margin-top: 2px; }
+    .settings-input { background: #ffffff0a; border: 1px solid #ffffff22; border-radius: 8px; padding: 8px 12px; color: #fff; font-size: 13px; font-family: monospace; outline: none; width: 200px; }
+    .settings-save-btn { padding: 8px 16px; border-radius: 8px; border: none; background: #4ade80; color: #000; font-size: 13px; font-weight: 700; cursor: pointer; }
+    .api-status { font-size: 12px; margin-top: 8px; }
+
+    .hidden { display: none !important; }
+    .section-title { font-size: 11px; font-weight: 700; color: #ffffff33; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 14px; }
+    .event-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .event-chip { padding: 5px 12px; border-radius: 8px; border: 1px solid; font-size: 11px; font-weight: 600; }
+    .overall-rate { text-align: center; background: #ffffff08; border: 1px solid #ffffff14; border-radius: 12px; padding: 10px 16px; }
+    .overall-rate-num { font-size: 26px; font-weight: 800; }
+    .overall-rate-label { font-size: 9px; color: #ffffff44; text-transform: uppercase; letter-spacing: 2px; }
+    .empty-state { text-align: center; padding: 40px 20px; color: #ffffff33; }
+    .reset-btn { width: 100%; margin-top: 16px; padding: 12px; background: transparent; border: 1px solid #ff444422; border-radius: 10px; font-size: 12px; color: #ff6666; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -885,11 +166,11 @@
       <div style="font-size:48px;margin-bottom:16px">🏊‍♂️🚴‍♂️🏃‍♂️</div>
       <h1>Training Plan 2026</h1>
     </div>
-    <p>Enter your Anthropic API key to enable AI coaching. Your key is stored only on this device and never shared.</p>
+    <p>Enter your Anthropic API key to enable AI coaching and adaptive planning. Stored only on this device.</p>
     <div style="width:100%;max-width:400px;display:flex;flex-direction:column;gap:12px">
       <input type="password" id="api-key-input" class="setup-input" placeholder="sk-ant-api03-..." autocomplete="off" spellcheck="false" />
       <button class="setup-btn" onclick="saveApiKey()">Save &amp; Start Training</button>
-      <span class="setup-link" onclick="skipApiKey()">Skip — use without AI coaching</span>
+      <span class="setup-link" onclick="skipApiKey()">Skip — use without AI features</span>
     </div>
     <p style="font-size:11px;color:#ffffff33">Get a key at console.anthropic.com</p>
   </div>
@@ -923,410 +204,484 @@
   <script>
     const PHASES = [
       {
-        id: "base",
-        label: "BASE",
-        period: "Mar–May",
-        months: "March – May 2026",
-        color: "#4ade80",
-        bg: "#052e16",
-        focus: "Aerobic base · Mobility · Upper body strength · Swim technique",
-        subtitle: "Build the engine",
-        description: "Establish aerobic capacity, fix movement patterns, build pull-up and back strength. Swimming flexible — Third Space or anywhere. Upper body emphasis: lats, rear delts, rotator cuff, arms.",
-        events: ["Triathlon prep begins", "Upper body & swim foundations"],
-        weeks: [
-          { label: "Mon", type: "REST / MOBILITY", icon: "🧘", duration: null, tag: "recovery", sessions: ["20 min yoga or mobility flow (garden)", "Foam rolling — lats, thoracic, hips, calves", "Optional: 10 min breathwork"], tsClass: null },
-          { label: "Tue", type: "SWIM + UPPER BODY", icon: "🏊", duration: "45 min", tag: "key", sessions: ["Swim 25–30 min — Third Space pool or local pool/lido", "Technique focus: catch drills, bilateral breathing", "Pull-up progression 3×5 (negatives/bands if needed)", "Face pulls 3×15 + band pull-aparts 3×15", "Dead bugs + hollow body holds 2×10"], tsClass: { name: "Aqua Fit or Masters Swim", note: "Any structured swim class at Third Space — great for technique in a coached environment." } },
-          { label: "Wed", type: "OUTDOOR RUN", icon: "🏃", duration: "40–45 min", tag: "cardio", sessions: ["40 min easy Zone 2 run (conversational pace)", "Target: 5km, HR <150bpm", "Strides ×4 in final 5 min"], tsClass: { name: "Track & Tempo Class", note: "Coached running session at Third Space — group running builds pacing discipline." } },
-          { label: "Thu", type: "REST / FLEX", icon: "🌿", duration: null, tag: "flex", sessions: ["Full rest if socially heavy week", "If fresh: 20 min kettlebell (garden)", "Swings, goblet squats, Turkish get-ups"], tsClass: null },
-          { label: "Fri", type: "STRENGTH — PUSH + PULL", icon: "💪", duration: "45 min", tag: "key", sessions: ["Squat 3×6 (build to 70kg) + Romanian deadlift 3×8", "Dumbbell bench 3×10 + seated cable row 3×10", "Lat pulldown 3×10 + dumbbell shoulder press 3×8", "Bicep curl 2×12 + tricep pushdown 2×12"], tsClass: { name: "Barbell Club / Lift", note: "Third Space Barbell Club — squats, deadlifts and pressing in a coached 45 min format." } },
-          { label: "Sat", type: "LONG CYCLE", icon: "🚴", duration: "2–3 hrs", tag: "endurance", sessions: ["2–3hr endurance cycle (Zone 2)", "Build toward sustained tempo efforts", "Stretch + cold shower after"], tsClass: null },
-          { label: "Sun", type: "REST / ACTIVE", icon: "🌿", duration: null, tag: "recovery", sessions: ["Walk 5km or light hike", "Weekly debrief — log sessions", "Enjoy the beer 🍺"], tsClass: null }
+        id:"base", label:"BASE", period:"Mar–May", months:"March – May 2026",
+        color:"#4ade80", bg:"#052e16",
+        focus:"Aerobic base · Mobility · Upper body strength · Swim technique",
+        subtitle:"Build the engine",
+        description:"Establish aerobic capacity, fix movement patterns, build pull-up and back strength. Swimming flexible — Third Space or anywhere. Upper body emphasis: lats, rear delts, rotator cuff, arms.",
+        events:["Triathlon prep begins","Upper body & swim foundations"],
+        weeks:[
+          {label:"Mon",type:"REST / MOBILITY",icon:"🧘",duration:null,tag:"recovery",sessions:["20 min yoga or mobility flow (garden)","Foam rolling — lats, thoracic, hips, calves","Optional: 10 min breathwork"],tsClass:null},
+          {label:"Tue",type:"SWIM + UPPER BODY",icon:"🏊",duration:"45 min",tag:"key",sessions:["Swim 25–30 min — Third Space pool or local pool/lido","Technique focus: catch drills, bilateral breathing","Pull-up progression 3×5 (negatives/bands if needed)","Face pulls 3×15 + band pull-aparts 3×15","Dead bugs + hollow body holds 2×10"],tsClass:{name:"Aqua Fit or Masters Swim",note:"Any structured swim class at Third Space — great for technique in a coached environment."}},
+          {label:"Wed",type:"OUTDOOR RUN",icon:"🏃",duration:"40–45 min",tag:"cardio",sessions:["40 min easy Zone 2 run (conversational pace)","Target: 5km, HR <150bpm","Strides ×4 in final 5 min"],tsClass:{name:"Track & Tempo Class",note:"Coached running session at Third Space — group running builds pacing discipline."}},
+          {label:"Thu",type:"REST / FLEX",icon:"🌿",duration:null,tag:"flex",sessions:["Full rest if socially heavy week","If fresh: 20 min kettlebell (garden)","Swings, goblet squats, Turkish get-ups"],tsClass:null},
+          {label:"Fri",type:"STRENGTH — PUSH + PULL",icon:"💪",duration:"45 min",tag:"key",sessions:["Squat 3×6 (build to 70kg) + Romanian deadlift 3×8","Dumbbell bench 3×10 + seated cable row 3×10","Lat pulldown 3×10 + dumbbell shoulder press 3×8","Bicep curl 2×12 + tricep pushdown 2×12"],tsClass:{name:"Barbell Club / Lift",note:"Third Space Barbell Club — squats, deadlifts and pressing in a coached 45 min format."}},
+          {label:"Sat",type:"LONG CYCLE",icon:"🚴",duration:"2–3 hrs",tag:"endurance",sessions:["2–3hr endurance cycle (Zone 2)","Build toward sustained tempo efforts","Stretch + cold shower after"],tsClass:null},
+          {label:"Sun",type:"REST / ACTIVE",icon:"🌿",duration:null,tag:"recovery",sessions:["Walk 5km or light hike","Weekly debrief — log sessions","Enjoy the beer 🍺"],tsClass:null}
         ]
       },
       {
-        id: "build",
-        label: "BUILD",
-        period: "Jun–Jul",
-        months: "June – July 2026",
-        color: "#fb923c",
-        bg: "#1c0a00",
-        focus: "Triathlon specificity · Hyrox prep · Back & shoulder strength peaks",
-        subtitle: "Sharpen the blade",
-        description: "Higher intensity. Brick sessions (bike→run). Hyrox introduced. Swim builds toward 1.5km. Pull-ups target: 5–7 unassisted.",
-        events: ["Olympic Triathlon (Sep target)", "Hyrox Q4 prep begins", "Swim distance builds"],
-        weeks: [
-          { label: "Mon", type: "REST / MOBILITY", icon: "🧘", duration: null, tag: "recovery", sessions: ["Mobility: hip flexors, shoulders, ankles (20 min)", "Thoracic rotation + band pull-aparts", "Breathwork or sauna at Third Space"], tsClass: null },
-          { label: "Tue", type: "SWIM + BACK", icon: "🏊", duration: "45 min", tag: "key", sessions: ["Swim 25–30 min — Third Space or open water", "Build toward 1.5km continuous (triathlon target)", "Seated cable row 3×10 + single-arm DB row 3×8 each", "Face pulls 3×15 + lat pulldown 2×10"], tsClass: { name: "Aqua Fit or Coached Swim", note: "Any Third Space swim class — open water technique valuable here." } },
-          { label: "Wed", type: "BRICK SESSION", icon: "🚴🏃", duration: "45 min", tag: "key", sessions: ["25 min tempo cycle (race simulation effort)", "Immediately into: 15 min run off the bike", "Focus on running form when legs are heavy", "Cool down + stretch 5 min"], tsClass: { name: "Indoor Cycling / Spin Class", note: "Replace brick with a 45 min Third Space spin class — great triathlon cardio prep." } },
-          { label: "Thu", type: "REST / FLEX", icon: "🌿", duration: null, tag: "flex", sessions: ["Rest if big social week ahead", "If fresh: KB garden circuit 20 min", "Swings, cleans, press, goblet squat"], tsClass: null },
-          { label: "Fri", type: "STRENGTH + HYROX", icon: "🏋️", duration: "45 min", tag: "key", sessions: ["Deadlift 3×5 + pull-ups 3×max", "Dumbbell shoulder press 3×10 + lateral raises 3×12", "Hammer curl 2×12 + skull crushers 2×12", "Pallof press 2×10 each side", "Ski erg 2×500m or wall balls 2×20"], tsClass: { name: "HYROX Training / Functional Fitness", note: "Third Space HYROX class — sled, ski erg, wall balls, carries in a coached circuit." } },
-          { label: "Sat", type: "LONG ENDURANCE", icon: "🚴", duration: "2–4 hrs", tag: "endurance", sessions: ["80km endurance cycle (Ventoux base building)", "OR: long hike/trail run if cycling fatigue is high", "Nutrition: 60g carbs/hr on long rides"], tsClass: null },
-          { label: "Sun", type: "ACTIVE RECOVERY", icon: "🌿", duration: null, tag: "recovery", sessions: ["Easy 30 min walk or light KB flow", "Light stretching, hip openers, band pull-aparts", "Social activity / beers 🍺"], tsClass: null }
+        id:"build", label:"BUILD", period:"Jun–Jul", months:"June – July 2026",
+        color:"#fb923c", bg:"#1c0a00",
+        focus:"Triathlon specificity · Hyrox prep · Back & shoulder strength peaks",
+        subtitle:"Sharpen the blade",
+        description:"Higher intensity. Brick sessions (bike→run). Hyrox introduced. Swim builds toward 1.5km. Pull-ups target: 5–7 unassisted.",
+        events:["Olympic Triathlon (Sep target)","Hyrox Q4 prep begins","Swim distance builds"],
+        weeks:[
+          {label:"Mon",type:"REST / MOBILITY",icon:"🧘",duration:null,tag:"recovery",sessions:["Mobility: hip flexors, shoulders, ankles (20 min)","Thoracic rotation + band pull-aparts","Breathwork or sauna at Third Space"],tsClass:null},
+          {label:"Tue",type:"SWIM + BACK",icon:"🏊",duration:"45 min",tag:"key",sessions:["Swim 25–30 min — Third Space or open water","Build toward 1.5km continuous (triathlon target)","Seated cable row 3×10 + single-arm DB row 3×8 each","Face pulls 3×15 + lat pulldown 2×10"],tsClass:{name:"Aqua Fit or Coached Swim",note:"Any Third Space swim class — open water technique valuable here."}},
+          {label:"Wed",type:"BRICK SESSION",icon:"🚴🏃",duration:"45 min",tag:"key",sessions:["25 min tempo cycle (race simulation effort)","Immediately into: 15 min run off the bike","Focus on running form when legs are heavy","Cool down + stretch 5 min"],tsClass:{name:"Indoor Cycling / Spin Class",note:"Replace brick with a 45 min Third Space spin class — great triathlon cardio prep."}},
+          {label:"Thu",type:"REST / FLEX",icon:"🌿",duration:null,tag:"flex",sessions:["Rest if big social week ahead","If fresh: KB garden circuit 20 min","Swings, cleans, press, goblet squat"],tsClass:null},
+          {label:"Fri",type:"STRENGTH + HYROX",icon:"🏋️",duration:"45 min",tag:"key",sessions:["Deadlift 3×5 + pull-ups 3×max","Dumbbell shoulder press 3×10 + lateral raises 3×12","Hammer curl 2×12 + skull crushers 2×12","Pallof press 2×10 each side","Ski erg 2×500m or wall balls 2×20"],tsClass:{name:"HYROX Training / Functional Fitness",note:"Third Space HYROX class — sled, ski erg, wall balls, carries in a coached circuit."}},
+          {label:"Sat",type:"LONG ENDURANCE",icon:"🚴",duration:"2–4 hrs",tag:"endurance",sessions:["80km endurance cycle (Ventoux base building)","OR: long hike/trail run if cycling fatigue is high","Nutrition: 60g carbs/hr on long rides"],tsClass:null},
+          {label:"Sun",type:"ACTIVE RECOVERY",icon:"🌿",duration:null,tag:"recovery",sessions:["Easy 30 min walk or light KB flow","Light stretching, hip openers, band pull-aparts","Social activity / beers 🍺"],tsClass:null}
         ]
       },
       {
-        id: "peak",
-        label: "PEAK",
-        period: "Aug–Sep",
-        months: "August – September 2026",
-        color: "#f43f5e",
-        bg: "#1a0008",
-        focus: "Olympic Triathlon taper · Race day · Ventoux base-building",
-        subtitle: "Race ready",
-        description: "Taper into triathlon — swim stays sharp, volume reduces. Race week: cut volume 40%. Post-race: pivot to Ventoux climbing specificity.",
-        events: ["🏆 Olympic Triathlon — September", "Ventoux cycle — November build"],
-        weeks: [
-          { label: "Mon", type: "REST / YOGA", icon: "🧘", duration: null, tag: "recovery", sessions: ["Full rest or Third Space yoga class", "Legs elevation, gentle foam roll", "Pre-race: sleep, nutrition, hydration focus"], tsClass: null },
-          { label: "Tue", type: "SWIM + UPPER BODY", icon: "🏊", duration: "45 min", tag: "key", sessions: ["Swim 25–30 min — race pace efforts + sighting drills", "Taper week: 20 min easy technique only", "Cable rows 3×10 + face pulls 3×15", "Pull-ups 3×max"], tsClass: { name: "Coached Swim / Aqua Class", note: "Any Third Space swim class. Taper week: keep it easy — stay loose." } },
-          { label: "Wed", type: "CYCLE + STRENGTH", icon: "🚴", duration: "45 min", tag: "key", sessions: ["30 min cycle — 2×8 min at race effort, rest easy", "Taper week: 20 min easy spin only", "Squat 3×5, dumbbell shoulder press 3×8", "Farmer carries 2×30m"], tsClass: { name: "Spin / Indoor Cycling Class", note: "Spin class covers non-taper weeks. Taper week: 20 min on a bike and leave." } },
-          { label: "Thu", type: "REST", icon: "🌿", duration: null, tag: "flex", sessions: ["Full rest — especially race week", "Kit prep, race briefing review", "Light walk 20 min max"], tsClass: null },
-          { label: "Fri", type: "RUN (short/sharp)", icon: "🏃", duration: "20–30 min", tag: "cardio", sessions: ["20 min easy run with 4×30 sec strides", "Taper week: 15 min jog only", "Shake out legs — stay loose"], tsClass: { name: "Yoga or Stretch Class", note: "Race week Friday: yoga instead of run — saves legs, keeps body moving." } },
-          { label: "Sat", type: "RACE DAY / LONG RIDE", icon: "🏆", duration: "Race or 3 hrs", tag: "endurance", sessions: ["RACE: Olympic Triathlon — execute your plan", "Non-race weeks: 3hr climbing cycle (Ventoux sim)", "Big gear, low cadence up sustained gradients"], tsClass: null },
-          { label: "Sun", type: "ACTIVE RECOVERY", icon: "🌿", duration: null, tag: "recovery", sessions: ["Post-race: easy walk or gentle cycle spin", "Celebrate — you've earned it 🍺🍺", "Log splits, review race data, eat everything"], tsClass: null }
+        id:"peak", label:"PEAK", period:"Aug–Sep", months:"August – September 2026",
+        color:"#f43f5e", bg:"#1a0008",
+        focus:"Olympic Triathlon taper · Race day · Ventoux base-building",
+        subtitle:"Race ready",
+        description:"Taper into triathlon — swim stays sharp, volume reduces. Race week: cut volume 40%. Post-race: pivot to Ventoux climbing specificity.",
+        events:["🏆 Olympic Triathlon — September","Ventoux cycle — November build"],
+        weeks:[
+          {label:"Mon",type:"REST / YOGA",icon:"🧘",duration:null,tag:"recovery",sessions:["Full rest or Third Space yoga class","Legs elevation, gentle foam roll","Pre-race: sleep, nutrition, hydration focus"],tsClass:null},
+          {label:"Tue",type:"SWIM + UPPER BODY",icon:"🏊",duration:"45 min",tag:"key",sessions:["Swim 25–30 min — race pace efforts + sighting drills","Taper week: 20 min easy technique only","Cable rows 3×10 + face pulls 3×15","Pull-ups 3×max"],tsClass:{name:"Coached Swim / Aqua Class",note:"Any Third Space swim class. Taper week: keep it easy — stay loose."}},
+          {label:"Wed",type:"CYCLE + STRENGTH",icon:"🚴",duration:"45 min",tag:"key",sessions:["30 min cycle — 2×8 min at race effort, rest easy","Taper week: 20 min easy spin only","Squat 3×5, dumbbell shoulder press 3×8","Farmer carries 2×30m"],tsClass:{name:"Spin / Indoor Cycling Class",note:"Spin class covers non-taper weeks. Taper week: 20 min on a bike and leave."}},
+          {label:"Thu",type:"REST",icon:"🌿",duration:null,tag:"flex",sessions:["Full rest — especially race week","Kit prep, race briefing review","Light walk 20 min max"],tsClass:null},
+          {label:"Fri",type:"RUN (short/sharp)",icon:"🏃",duration:"20–30 min",tag:"cardio",sessions:["20 min easy run with 4×30 sec strides","Taper week: 15 min jog only","Shake out legs — stay loose"],tsClass:{name:"Yoga or Stretch Class",note:"Race week Friday: yoga instead of run — saves legs, keeps body moving."}},
+          {label:"Sat",type:"RACE DAY / LONG RIDE",icon:"🏆",duration:"Race or 3 hrs",tag:"endurance",sessions:["RACE: Olympic Triathlon — execute your plan","Non-race weeks: 3hr climbing cycle (Ventoux sim)","Big gear, low cadence up sustained gradients"],tsClass:null},
+          {label:"Sun",type:"ACTIVE RECOVERY",icon:"🌿",duration:null,tag:"recovery",sessions:["Post-race: easy walk or gentle cycle spin","Celebrate — you've earned it 🍺🍺","Log splits, review race data, eat everything"],tsClass:null}
         ]
       },
       {
-        id: "ventoux",
-        label: "VENTOUX",
-        period: "Oct–Nov",
-        months: "October – November 2026",
-        color: "#a78bfa",
-        bg: "#0d001f",
-        focus: "Mont Ventoux climb · Hyrox race · Splitboard fitness begins",
-        subtitle: "Conquer the peaks",
-        description: "Cycling is king — long climbs, sustained power, elevation. Hyrox final sharpening. Swim maintained for shoulder health. Pull-ups targeting 8–10.",
-        events: ["🏆 Mt Ventoux — November", "🏆 Hyrox Q4", "Splitboard prep begins"],
-        weeks: [
-          { label: "Mon", type: "REST / MOBILITY", icon: "🧘", duration: null, tag: "recovery", sessions: ["Hip flexors + IT band focus (cyclists' tightness)", "Thoracic mobility + band pull-aparts", "Third Space: mobility class or reformer pilates"], tsClass: null },
-          { label: "Tue", type: "SWIM + BACK", icon: "🏊", duration: "45 min", tag: "key", sessions: ["Swim 25–30 min — any pool, active recovery pace", "Great for shoulder recovery after heavy cycling", "Seated cable row 3×10 + lat pulldown 3×10", "Face pulls 3×15"], tsClass: { name: "Aqua Class or Masters Swim", note: "Low impact, great for shoulder maintenance in heavy cycling phase." } },
-          { label: "Wed", type: "HYROX CIRCUIT", icon: "🏋️", duration: "45 min", tag: "key", sessions: ["Ski erg 3×500m (1 min rest)", "Wall balls 3×20 + sled push 3×20m", "Burpee broad jumps 2×10m", "Farmers carry 3×30m", "Finish: 1km run at race pace"], tsClass: { name: "HYROX Training Class", note: "Third Space HYROX class — all stations, coached format. Essential pre-race." } },
-          { label: "Thu", type: "REST / FLEX", icon: "🌿", duration: null, tag: "flex", sessions: ["Full rest — especially after Wed Hyrox effort", "If feeling good: 20 min garden KB flow", "Swings, goblet squats, carries"], tsClass: null },
-          { label: "Fri", type: "STRENGTH + SPLITBOARD", icon: "🏔️", duration: "45 min", tag: "key", sessions: ["Weighted step-ups 3×10 each leg + Bulgarian split squat 3×8", "Pull-ups 3×max + dumbbell shoulder press 3×10", "Loaded carries 2×40m + lateral raises 3×12", "Bicep curl 2×12 + tricep dips 2×12"], tsClass: { name: "Lower Body Strength Class", note: "Third Space lower-body class — coached unilateral work mirrors splitboard demands." } },
-          { label: "Sat", type: "CLIMBING CYCLE", icon: "🚴", duration: "3–6 hrs", tag: "endurance", sessions: ["Zwift: 2×20 min at FTP or outdoor 4–6hr ride", "Simulate Ventoux gradient (6–8% sustained)", "Fuel with 60g carbs/hr minimum"], tsClass: null },
-          { label: "Sun", type: "ACTIVE RECOVERY", icon: "🌿", duration: null, tag: "recovery", sessions: ["Easy 5km walk or hike (trail if possible)", "Stretch + legs elevated 15 min", "Weekly reflection + beer 🍺"], tsClass: null }
+        id:"ventoux", label:"VENTOUX", period:"Oct–Nov", months:"October – November 2026",
+        color:"#a78bfa", bg:"#0d001f",
+        focus:"Mont Ventoux climb · Hyrox race · Splitboard fitness begins",
+        subtitle:"Conquer the peaks",
+        description:"Cycling is king — long climbs, sustained power, elevation. Hyrox final sharpening. Swim maintained for shoulder health. Pull-ups targeting 8–10.",
+        events:["🏆 Mt Ventoux — November","🏆 Hyrox Q4","Splitboard prep begins"],
+        weeks:[
+          {label:"Mon",type:"REST / MOBILITY",icon:"🧘",duration:null,tag:"recovery",sessions:["Hip flexors + IT band focus (cyclists' tightness)","Thoracic mobility + band pull-aparts","Third Space: mobility class or reformer pilates"],tsClass:null},
+          {label:"Tue",type:"SWIM + BACK",icon:"🏊",duration:"45 min",tag:"key",sessions:["Swim 25–30 min — any pool, active recovery pace","Great for shoulder recovery after heavy cycling","Seated cable row 3×10 + lat pulldown 3×10","Face pulls 3×15"],tsClass:{name:"Aqua Class or Masters Swim",note:"Low impact, great for shoulder maintenance in heavy cycling phase."}},
+          {label:"Wed",type:"HYROX CIRCUIT",icon:"🏋️",duration:"45 min",tag:"key",sessions:["Ski erg 3×500m (1 min rest)","Wall balls 3×20 + sled push 3×20m","Burpee broad jumps 2×10m","Farmers carry 3×30m","Finish: 1km run at race pace"],tsClass:{name:"HYROX Training Class",note:"Third Space HYROX class — all stations, coached format. Essential pre-race."}},
+          {label:"Thu",type:"REST / FLEX",icon:"🌿",duration:null,tag:"flex",sessions:["Full rest — especially after Wed Hyrox effort","If feeling good: 20 min garden KB flow","Swings, goblet squats, carries"],tsClass:null},
+          {label:"Fri",type:"STRENGTH + SPLITBOARD",icon:"🏔️",duration:"45 min",tag:"key",sessions:["Weighted step-ups 3×10 each leg + Bulgarian split squat 3×8","Pull-ups 3×max + dumbbell shoulder press 3×10","Loaded carries 2×40m + lateral raises 3×12","Bicep curl 2×12 + tricep dips 2×12"],tsClass:{name:"Lower Body Strength Class",note:"Third Space lower-body class — coached unilateral work mirrors splitboard demands."}},
+          {label:"Sat",type:"CLIMBING CYCLE",icon:"🚴",duration:"3–6 hrs",tag:"endurance",sessions:["Zwift: 2×20 min at FTP or outdoor 4–6hr ride","Simulate Ventoux gradient (6–8% sustained)","Fuel with 60g carbs/hr minimum"],tsClass:null},
+          {label:"Sun",type:"ACTIVE RECOVERY",icon:"🌿",duration:null,tag:"recovery",sessions:["Easy 5km walk or hike (trail if possible)","Stretch + legs elevated 15 min","Weekly reflection + beer 🍺"],tsClass:null}
         ]
       },
       {
-        id: "winter",
-        label: "WINTER",
-        period: "Dec–Jan",
-        months: "December 2026 – Jan 2027",
-        color: "#38bdf8",
-        bg: "#00101a",
-        focus: "Splitboard touring fitness · High altitude prep · Strength maintenance",
-        subtitle: "The mountain awaits",
-        description: "Volume drops for holidays but quality stays high. Swim weekly for shoulder maintenance. Leg endurance, VO2, cold-weather resilience. Christmas weeks: presence over performance.",
-        events: ["❄️ Cat skiing & splitboard touring — early 2027", "High altitude training focus"],
-        weeks: [
-          { label: "Mon", type: "REST / SAUNA", icon: "🧘", duration: null, tag: "recovery", sessions: ["Full rest or Third Space sauna", "Cold-hot contrast — altitude adaptation benefit", "Breathwork: Wim Hof or box breathing"], tsClass: null },
-          { label: "Tue", type: "SWIM + UPPER BODY", icon: "🏊", duration: "45 min", tag: "key", sessions: ["Swim 25–30 min — any pool, easy to moderate", "Pull-ups 3×max (target 10 unassisted)", "Seated cable row 3×10 + face pulls 3×15", "Band pull-aparts 3×20"], tsClass: { name: "Aqua Class or Lane Swim", note: "Easy swim to keep shoulders mobile heading into ski season." } },
-          { label: "Wed", type: "STRENGTH — LEGS + PUSH", icon: "💪", duration: "45 min", tag: "key", sessions: ["Squat 3×5 (target 80–85kg) + step-ups 3×8 each leg", "Dumbbell shoulder press 3×10 + lateral raises 3×12", "KB swing 3×15 + goblet squat 3×10", "Tricep pushdown 2×12 + hammer curl 2×12"], tsClass: { name: "Barbell Club / Full Body Strength", note: "Third Space strength class — squats, pressing and carries in coached 45 min." } },
-          { label: "Thu", type: "REST / FLEX", icon: "🌿", duration: null, tag: "flex", sessions: ["Rest — December is socially heavy, protect recovery", "If fresh: 20 min bodyweight circuit", "Squat jumps, push-ups, mountain climbers, plank"], tsClass: null },
-          { label: "Fri", type: "RUN / HIKE", icon: "🏃", duration: "40–45 min", tag: "cardio", sessions: ["Hilly 5km run or trail run — 40 min", "OR treadmill at 8–10% incline, 40 min", "Weighted vest if available — simulates touring pack"], tsClass: { name: "Reformer Pilates or Yoga", note: "December Fridays: Pilates or yoga — active recovery, mobility, core work for ski season." } },
-          { label: "Sat", type: "LONG ENDURANCE", icon: "🚵", duration: "90 min – 3 hrs", tag: "endurance", sessions: ["Indoor cycle 90 min (Zwift) or outdoor hike with elevation", "Stairmaster 40 min with pack (altitude simulation)", "Christmas weeks: family walk with a hill — seriously counts"], tsClass: null },
-          { label: "Sun", type: "ACTIVE RECOVERY", icon: "🌿", duration: null, tag: "recovery", sessions: ["Yoga or pilates 30 min", "Reflect on the year — you've done a lot", "Celebrate properly 🥂🍺"], tsClass: null }
+        id:"winter", label:"WINTER", period:"Dec–Jan", months:"December 2026 – Jan 2027",
+        color:"#38bdf8", bg:"#00101a",
+        focus:"Splitboard touring fitness · High altitude prep · Strength maintenance",
+        subtitle:"The mountain awaits",
+        description:"Volume drops for holidays but quality stays high. Swim weekly for shoulder maintenance. Leg endurance, VO2, cold-weather resilience. Christmas weeks: presence over performance.",
+        events:["❄️ Cat skiing & splitboard touring — early 2027","High altitude training focus"],
+        weeks:[
+          {label:"Mon",type:"REST / SAUNA",icon:"🧘",duration:null,tag:"recovery",sessions:["Full rest or Third Space sauna","Cold-hot contrast — altitude adaptation benefit","Breathwork: Wim Hof or box breathing"],tsClass:null},
+          {label:"Tue",type:"SWIM + UPPER BODY",icon:"🏊",duration:"45 min",tag:"key",sessions:["Swim 25–30 min — any pool, easy to moderate","Pull-ups 3×max (target 10 unassisted)","Seated cable row 3×10 + face pulls 3×15","Band pull-aparts 3×20"],tsClass:{name:"Aqua Class or Lane Swim",note:"Easy swim to keep shoulders mobile heading into ski season."}},
+          {label:"Wed",type:"STRENGTH — LEGS + PUSH",icon:"💪",duration:"45 min",tag:"key",sessions:["Squat 3×5 (target 80–85kg) + step-ups 3×8 each leg","Dumbbell shoulder press 3×10 + lateral raises 3×12","KB swing 3×15 + goblet squat 3×10","Tricep pushdown 2×12 + hammer curl 2×12"],tsClass:{name:"Barbell Club / Full Body Strength",note:"Third Space strength class — squats, pressing and carries in coached 45 min."}},
+          {label:"Thu",type:"REST / FLEX",icon:"🌿",duration:null,tag:"flex",sessions:["Rest — December is socially heavy, protect recovery","If fresh: 20 min bodyweight circuit","Squat jumps, push-ups, mountain climbers, plank"],tsClass:null},
+          {label:"Fri",type:"RUN / HIKE",icon:"🏃",duration:"40–45 min",tag:"cardio",sessions:["Hilly 5km run or trail run — 40 min","OR treadmill at 8–10% incline, 40 min","Weighted vest if available — simulates touring pack"],tsClass:{name:"Reformer Pilates or Yoga",note:"December Fridays: Pilates or yoga — active recovery, mobility, core work for ski season."}},
+          {label:"Sat",type:"LONG ENDURANCE",icon:"🚵",duration:"90 min – 3 hrs",tag:"endurance",sessions:["Indoor cycle 90 min (Zwift) or outdoor hike with elevation","Stairmaster 40 min with pack (altitude simulation)","Christmas weeks: family walk with a hill — seriously counts"],tsClass:null},
+          {label:"Sun",type:"ACTIVE RECOVERY",icon:"🌿",duration:null,tag:"recovery",sessions:["Yoga or pilates 30 min","Reflect on the year — you've done a lot","Celebrate properly 🥂🍺"],tsClass:null}
         ]
       }
     ];
 
     const TAG_COLORS = {
-      key: { bg: "#fef08a18", border: "#fef08a55", text: "#fef08a" },
-      cardio: { bg: "#bfdbfe18", border: "#bfdbfe55", text: "#93c5fd" },
-      endurance: { bg: "#bbf7d018", border: "#bbf7d055", text: "#86efac" },
-      recovery: { bg: "#f5d0fe18", border: "#f5d0fe55", text: "#e879f9" },
-      flex: { bg: "#fed7aa18", border: "#fed7aa55", text: "#fb923c" }
+      key:{bg:"#fef08a18",border:"#fef08a55",text:"#fef08a"},
+      cardio:{bg:"#bfdbfe18",border:"#bfdbfe55",text:"#93c5fd"},
+      endurance:{bg:"#bbf7d018",border:"#bbf7d055",text:"#86efac"},
+      recovery:{bg:"#f5d0fe18",border:"#f5d0fe55",text:"#e879f9"},
+      flex:{bg:"#fed7aa18",border:"#fed7aa55",text:"#fb923c"}
     };
+
+    const CONSTRAINT_CHIPS = [
+      {id:"travel_fri", label:"✈️ Flying Friday"},
+      {id:"travel_sat", label:"✈️ Flying Saturday"},
+      {id:"away_weekend", label:"🏨 Away weekend"},
+      {id:"late_work_week", label:"⏰ Late nights weekdays"},
+      {id:"free_weekend", label:"🟢 Free all weekend"},
+      {id:"social_weekend", label:"🍺 Big social weekend"},
+      {id:"work_from_home", label:"🏠 WFH all week"},
+      {id:"early_mornings_only", label:"🌅 Early mornings only"},
+      {id:"no_gym", label:"🚫 No gym access"},
+      {id:"tired_week", label:"😴 Low energy week"},
+      {id:"race_prep", label:"🏁 Race week"}
+    ];
 
     let state = {
       activePhaseIdx: 0,
       weekOffset: 0,
       expandedDay: null,
-      currentView: "week",
-      statsSubTab: "overview",
+      currentView: 'week',
+      statsSubTab: 'overview',
+      plannerOpen: true,
+      selectedConstraints: [],
+      plannerNote: '',
       completions: {},
       sessionLogs: {},
       coachMsgs: {},
+      weekAdaptations: {},
       editingLog: null,
-      weeklyBriefing: "",
+      weeklyBriefing: '',
       loadingCoach: null,
       loadingBriefing: false,
-      apiKey: ""
+      loadingAdaptation: false,
+      apiKey: ''
     };
 
-    function getPhase() {
-      return PHASES[state.activePhaseIdx];
-    }
-
-    function getDayKey(phaseId, w, d) {
-      return `${phaseId}:w${w}:d${d}`;
-    }
+    function getPhase() { return PHASES[state.activePhaseIdx]; }
+    function getDayKey(pId, w, d) { return `${pId}:w${w}:d${d}`; }
+    function getWeekKey() { return `${getPhase().id}:w${state.weekOffset}`; }
 
     function getCurrentPhaseAndWeek() {
       const now = new Date();
       const map = [
-        { id: "base", start: new Date("2026-03-23"), end: new Date("2026-05-31") },
-        { id: "build", start: new Date("2026-06-01"), end: new Date("2026-07-31") },
-        { id: "peak", start: new Date("2026-08-01"), end: new Date("2026-09-30") },
-        { id: "ventoux", start: new Date("2026-10-01"), end: new Date("2026-11-30") },
-        { id: "winter", start: new Date("2026-12-01"), end: new Date("2027-01-31") }
+        {id:"base",start:new Date("2026-03-23"),end:new Date("2026-05-31")},
+        {id:"build",start:new Date("2026-06-01"),end:new Date("2026-07-31")},
+        {id:"peak",start:new Date("2026-08-01"),end:new Date("2026-09-30")},
+        {id:"ventoux",start:new Date("2026-10-01"),end:new Date("2026-11-30")},
+        {id:"winter",start:new Date("2026-12-01"),end:new Date("2027-01-31")}
       ];
-
       for (const p of map) {
         if (now >= p.start && now <= p.end) {
-          return {
-            phaseId: p.id,
-            weekOffset: Math.floor((now - p.start) / 604800000)
-          };
+          return {phaseId:p.id, weekOffset:Math.floor((now-p.start)/604800000)};
         }
       }
-
-      return { phaseId: "base", weekOffset: 0 };
+      return {phaseId:"base", weekOffset:0};
     }
 
     function save() {
       try {
-        localStorage.setItem("tp_completions", JSON.stringify(state.completions));
-        localStorage.setItem("tp_sessionLogs", JSON.stringify(state.sessionLogs));
-        localStorage.setItem("tp_coachMsgs", JSON.stringify(state.coachMsgs));
-      } catch (e) {}
+        localStorage.setItem('tp_completions', JSON.stringify(state.completions));
+        localStorage.setItem('tp_sessionLogs', JSON.stringify(state.sessionLogs));
+        localStorage.setItem('tp_coachMsgs', JSON.stringify(state.coachMsgs));
+        localStorage.setItem('tp_weekAdaptations', JSON.stringify(state.weekAdaptations));
+      } catch(e) {}
     }
 
     function load() {
       try {
-        const c = localStorage.getItem("tp_completions");
-        if (c) state.completions = JSON.parse(c);
-
-        const l = localStorage.getItem("tp_sessionLogs");
-        if (l) state.sessionLogs = JSON.parse(l);
-
-        const m = localStorage.getItem("tp_coachMsgs");
-        if (m) state.coachMsgs = JSON.parse(m);
-
-        state.apiKey = localStorage.getItem("tp_apiKey") || "";
-      } catch (e) {}
+        const c = localStorage.getItem('tp_completions'); if(c) state.completions = JSON.parse(c);
+        const l = localStorage.getItem('tp_sessionLogs'); if(l) state.sessionLogs = JSON.parse(l);
+        const m = localStorage.getItem('tp_coachMsgs'); if(m) state.coachMsgs = JSON.parse(m);
+        const a = localStorage.getItem('tp_weekAdaptations'); if(a) state.weekAdaptations = JSON.parse(a);
+        state.apiKey = localStorage.getItem('tp_apiKey') || '';
+      } catch(e) {}
     }
 
     function formatLog(log) {
-      if (!log) return "";
+      if (!log) return '';
       const parts = [];
       if (log.weight) parts.push(`${log.weight}kg`);
       if (log.reps) parts.push(`${log.reps} reps`);
       if (log.distance) parts.push(`${log.distance}km`);
       if (log.time) parts.push(log.time);
       if (log.rpe) parts.push(`RPE ${log.rpe}/10`);
-      return parts.join(" · ");
+      return parts.join(' · ');
     }
 
     function buildLogContext() {
-      const entries = Object.entries(state.sessionLogs).slice(-10);
-      if (!entries.length) return "";
-
+      const entries = Object.entries(state.sessionLogs).slice(-8);
+      if (!entries.length) return '';
       const lines = entries.map(([k, v]) => {
-        const phaseId = k.split(":")[0];
-        const dIdx = parseInt(k.split(":d")[1], 10);
-        const phase = PHASES.find((p) => p.id === phaseId);
+        const phaseId = k.split(':')[0];
+        const dIdx = parseInt(k.split(':d')[1], 10);
+        const phase = PHASES.find(p => p.id === phaseId);
         const day = phase?.weeks[dIdx];
-
-        const parts = [`[${phaseId.toUpperCase()}]`];
-        if (day) parts.push(day.type);
-        if (v.note) parts.push(`"${v.note.slice(0, 80)}"`);
-        const metrics = formatLog(v);
-        if (metrics) parts.push(metrics);
-
-        return parts.join(" — ");
+        const parts = [`[${phaseId.toUpperCase()}] ${day?.type || 'Session'}`];
+        if (v.note) parts.push(`"${v.note.slice(0,60)}"`);
+        const m = formatLog(v);
+        if (m) parts.push(m);
+        return parts.join(' — ');
       });
-
-      return `Recent session logs:\n${lines.join("\n")}`;
+      return `Recent logs:\n${lines.join('\n')}`;
     }
 
-    async function callClaude(prompt) {
-      if (!state.apiKey) return "";
-
+    async function callClaude(prompt, maxTokens = 300) {
+      if (!state.apiKey) return '';
       try {
-        const r = await fetch("https://api.anthropic.com/v1/messages", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": state.apiKey,
-            "anthropic-version": "2023-06-01",
-            "anthropic-dangerous-direct-browser-access": "true"
+        const r = await fetch('https://api.anthropic.com/v1/messages', {
+          method:'POST',
+          headers:{
+            'Content-Type':'application/json',
+            'x-api-key':state.apiKey,
+            'anthropic-version':'2023-06-01',
+            'anthropic-dangerous-direct-browser-access':'true'
           },
-          body: JSON.stringify({
-            model: "claude-sonnet-4-20250514",
-            max_tokens: 250,
-            messages: [{ role: "user", content: prompt }]
+          body:JSON.stringify({
+            model:'claude-sonnet-4-20250514',
+            max_tokens:maxTokens,
+            messages:[{role:'user',content:prompt}]
           })
         });
-
         const d = await r.json();
-        if (d.error) return "";
-        return d.content?.[0]?.text || "";
-      } catch (e) {
-        return "";
+        if (d.error) return '';
+        return d.content?.[0]?.text || '';
+      } catch(e) {
+        return '';
       }
+    }
+
+    async function adaptWeek() {
+      const phase = getPhase();
+      const constraints = state.selectedConstraints
+        .map(id => CONSTRAINT_CHIPS.find(c => c.id === id)?.label || id)
+        .join(', ');
+      const note = state.plannerNote.trim();
+      const context = [constraints, note].filter(Boolean).join('. ');
+      if (!context) {
+        alert('Please select at least one constraint or describe your week first.');
+        return '';
+      }
+
+      const weekSummary = phase.weeks
+        .map(d => `${d.label}: ${d.type} (${d.tag}${d.duration ? ' · ' + d.duration : ''})`)
+        .join('\n');
+
+      const prompt = `You are a personal trainer adapting a training week for a busy corporate lawyer athlete.
+
+GOALS: Olympic triathlon Sep 2026, Mont Ventoux cycle Nov 2026, Hyrox Q4 2026, splitboard touring early 2027.
+CURRENT PHASE: ${phase.label} — ${phase.subtitle} (${phase.focus})
+
+THIS WEEK'S CONSTRAINTS: ${context}
+
+PLANNED SESSIONS:
+${weekSummary}
+
+INSTRUCTIONS:
+- Adapt EACH of the 7 days to fit the constraints. Keep the same day labels (Mon–Sun).
+- For rest/recovery/flex days, keep them as is unless travel forces a change.
+- Where sessions must move or compress, preserve the most important training stimulus.
+- If a day is blocked by travel, suggest a hotel-room or bodyweight alternative if appropriate, or mark as rest.
+- Be specific and practical. Keep each day's adaptation to 2–4 bullet points maximum.
+- Start each day on a new line with the format: DAY: [brief type label] — [bullet 1] | [bullet 2] | [bullet 3]
+- Example: Fri: REST (flying) — 10 min hotel bodyweight circuit on arrival | squats, push-ups, plank holds | no gym needed
+- Output ONLY the 7 adapted days, nothing else. No preamble, no summary.`;
+
+      return callClaude(prompt, 600);
+    }
+
+    function parseAdaptation(raw, phase) {
+      const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+      const result = phase.weeks.map(d => ({
+        type: d.type,
+        sessions: d.sessions.slice(),
+        adapted: false,
+        adaptedType: null
+      }));
+
+      const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
+      lines.forEach(line => {
+        const dayMatch = days.find(d => line.toLowerCase().startsWith(d.toLowerCase() + ':'));
+        if (!dayMatch) return;
+        const dayIdx = days.indexOf(dayMatch);
+        if (dayIdx < 0) return;
+
+        const rest = line.slice(dayMatch.length + 1).trim();
+        const dashIdx = rest.indexOf('—');
+        const adaptedType = dashIdx > -1 ? rest.slice(0, dashIdx).trim() : result[dayIdx].type;
+        const sessionsRaw = dashIdx > -1 ? rest.slice(dashIdx + 1).trim() : rest;
+        const sessions = sessionsRaw.split('|').map(s => s.trim()).filter(Boolean);
+
+        if (sessions.length) {
+          result[dayIdx].sessions = sessions;
+          result[dayIdx].adapted = true;
+          result[dayIdx].adaptedType = adaptedType || result[dayIdx].type;
+        }
+      });
+
+      return result;
     }
 
     async function getCoaching(dayType, skipped, logData) {
-      const done = Object.values(state.completions).filter((v) => v === "done").length;
-      const skip = Object.values(state.completions).filter((v) => v === "skipped").length;
+      const done = Object.values(state.completions).filter(v => v === 'done').length;
+      const skip = Object.values(state.completions).filter(v => v === 'skipped').length;
       const rate = (done + skip) > 0 ? Math.round(done / (done + skip) * 100) : 100;
       const phase = getPhase();
       const logContext = buildLogContext();
-      const logSummary = logData
-        ? `This session: ${formatLog(logData)}${logData.note ? '. Notes: "' + logData.note + '"' : ""}`
-        : "";
+      const logSummary = logData ? `This session: ${formatLog(logData)}${logData.note ? '. Notes: "' + logData.note + '"' : ''}` : '';
 
       if (skipped) {
-        return callClaude(
-          `Personal trainer, busy corporate lawyer. 2026 goals: Olympic triathlon Sep, Ventoux Nov, Hyrox Q4, splitboard early 2027. Phase: ${phase.label}. Just SKIPPED "${dayType}". Rate: ${rate}%. ${logContext}. 2 sentences: practical non-judgmental adjustment for rest of week. Specific. No preamble.`
-        );
+        return callClaude(`Personal trainer, busy corporate lawyer. Goals: triathlon Sep, Ventoux Nov, Hyrox Q4, splitboard 2027. Phase: ${phase.label}. SKIPPED "${dayType}". Rate: ${rate}%. ${logContext}. 2 sentences: practical non-judgmental adjustment for rest of week. Specific. No preamble.`);
       }
 
-      return callClaude(
-        `Personal trainer, busy corporate lawyer. 2026 goals: Olympic triathlon Sep, Ventoux Nov, Hyrox Q4, splitboard early 2027. Phase: ${phase.label}. Just COMPLETED "${dayType}". ${logSummary} Rate: ${rate}%. ${logContext}. 2 sentences: specific coaching response to what they logged + tip for next relevant session. Reference their actual numbers if available. No preamble.`
-      );
+      return callClaude(`Personal trainer, busy corporate lawyer. Goals: triathlon Sep, Ventoux Nov, Hyrox Q4, splitboard 2027. Phase: ${phase.label}. COMPLETED "${dayType}". ${logSummary} Rate: ${rate}%. ${logContext}. 2 sentences: specific coaching tip referencing their numbers. No preamble.`);
     }
 
     async function getWeeklyBriefing() {
       const phase = getPhase();
-      const done = phase.weeks.filter((_, i) => state.completions[getDayKey(phase.id, state.weekOffset, i)] === "done").length;
-      const skip = phase.weeks.filter((_, i) => state.completions[getDayKey(phase.id, state.weekOffset, i)] === "skipped").length;
+      const done = phase.weeks.filter((_, i) => state.completions[getDayKey(phase.id, state.weekOffset, i)] === 'done').length;
+      const skip = phase.weeks.filter((_, i) => state.completions[getDayKey(phase.id, state.weekOffset, i)] === 'skipped').length;
       const rate = (done + skip) > 0 ? Math.round(done / (done + skip) * 100) : 0;
       const skippedTypes = phase.weeks
-        .filter((_, i) => state.completions[getDayKey(phase.id, state.weekOffset, i)] === "skipped")
-        .map((d) => d.type)
-        .join(", ") || "none";
+        .filter((_, i) => state.completions[getDayKey(phase.id, state.weekOffset, i)] === 'skipped')
+        .map(d => d.type)
+        .join(', ') || 'none';
+      const wk = getWeekKey();
+      const adaptation = state.weekAdaptations[wk];
+      const adaptCtx = adaptation ? `This week was adapted for: ${adaptation.context}. ` : '';
       const logContext = buildLogContext();
 
-      return callClaude(
-        `Personal trainer. Phase: ${phase.label} (${phase.subtitle}). Week: ${done} done, ${skip} skipped (${rate}%). Skipped: ${skippedTypes}. Events: ${phase.events.join(", ")}. ${logContext}. 3 sentences: acknowledge the week, identify single most important focus next week given patterns and logged performance data, give one specific tactical tip referencing their actual numbers where logged. Direct, warm, no bullets.`
-      );
+      return callClaude(`Personal trainer. Phase: ${phase.label} (${phase.subtitle}). Week: ${done} done, ${skip} skipped (${rate}%). Skipped: ${skippedTypes}. ${adaptCtx}Events: ${phase.events.join(', ')}. ${logContext}. 3 sentences: acknowledge week, most important focus next week, one specific tactical tip. Direct, warm, no bullets.`);
     }
 
     function rateColor(r) {
-      if (r === null) return "#ffffff44";
-      if (r >= 70) return "#4ade80";
-      if (r >= 40) return "#fb923c";
-      return "#f43f5e";
+      return r === null ? '#ffffff44' : r >= 70 ? '#4ade80' : r >= 40 ? '#fb923c' : '#f43f5e';
     }
 
     function overallStats() {
-      const done = Object.values(state.completions).filter((v) => v === "done").length;
-      const skip = Object.values(state.completions).filter((v) => v === "skipped").length;
+      const done = Object.values(state.completions).filter(v => v === 'done').length;
+      const skip = Object.values(state.completions).filter(v => v === 'skipped').length;
       const total = done + skip;
-      return {
-        done,
-        skip,
-        total,
-        rate: total > 0 ? Math.round(done / total * 100) : null
-      };
+      return { done, skip, total, rate: total > 0 ? Math.round(done / total * 100) : null };
     }
 
     function updateHeader() {
       const phase = getPhase();
-      document.documentElement.style.setProperty("--phase-color", phase.color);
+      document.documentElement.style.setProperty('--phase-color', phase.color);
 
-      const sub = document.getElementById("phase-subtitle");
+      const sub = document.getElementById('phase-subtitle');
       sub.textContent = phase.subtitle;
       sub.style.background = `linear-gradient(135deg,#fff,${phase.color})`;
-      sub.style.webkitBackgroundClip = "text";
-      sub.style.webkitTextFillColor = "transparent";
+      sub.style.webkitBackgroundClip = 'text';
+      sub.style.webkitTextFillColor = 'transparent';
 
-      document.getElementById("phase-focus").textContent = phase.focus;
+      document.getElementById('phase-focus').textContent = phase.focus;
 
       const { rate } = overallStats();
-      const badge = document.getElementById("overall-rate-badge");
+      const badge = document.getElementById('overall-rate-badge');
       if (rate !== null) {
-        badge.classList.remove("hidden");
-        const num = document.getElementById("overall-rate-num");
-        num.textContent = rate + "%";
-        num.style.color = rateColor(rate);
+        badge.classList.remove('hidden');
+        document.getElementById('overall-rate-num').textContent = rate + '%';
+        document.getElementById('overall-rate-num').style.color = rateColor(rate);
       } else {
-        badge.classList.add("hidden");
+        badge.classList.add('hidden');
       }
 
-      document.getElementById("phase-chips").innerHTML = PHASES.map((p, i) => `
-        <button
-          class="phase-chip"
-          onclick="selectPhase(${i})"
-          style="background:${state.activePhaseIdx === i ? p.color : "#ffffff0a"};color:${state.activePhaseIdx === i ? "#000" : "#ffffff55"};border-color:${state.activePhaseIdx === i ? p.color : "#ffffff18"}"
-        >${p.label}</button>
-      `).join("");
+      document.getElementById('phase-chips').innerHTML = PHASES.map((p, i) =>
+        `<button class="phase-chip" onclick="selectPhase(${i})" style="background:${state.activePhaseIdx===i ? p.color : '#ffffff0a'};color:${state.activePhaseIdx===i ? '#000' : '#ffffff55'};border-color:${state.activePhaseIdx===i ? p.color : '#ffffff18'}">${p.label}</button>`
+      ).join('');
 
-      document.querySelectorAll(".nav-btn").forEach((b) => {
-        b.classList.toggle("active", b.dataset.view === state.currentView);
-      });
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.view === state.currentView));
+    }
+
+    function renderWeekPlanner(phase) {
+      const wk = getWeekKey();
+      const adaptation = state.weekAdaptations[wk];
+      const hasAdaptation = !!adaptation;
+      const hasInput = state.selectedConstraints.length > 0 || state.plannerNote.trim().length > 0;
+      const borderColor = hasAdaptation ? phase.color + '55' : '#ffffff18';
+      const bgColor = hasAdaptation ? phase.color + '0a' : '#ffffff07';
+
+      let badge = '';
+      if (hasAdaptation) {
+        badge = `<span class="week-planner-badge" style="background:${phase.color}22;color:${phase.color};border:1px solid ${phase.color}44">✓ Adapted</span>`;
+      } else if (hasInput) {
+        badge = `<span class="week-planner-badge" style="background:#fb923c22;color:#fb923c;border:1px solid #fb923c44">Unsaved</span>`;
+      }
+
+      let html = `<div class="week-planner" style="background:${bgColor};border-color:${borderColor}">
+        <div class="week-planner-header" onclick="togglePlanner()">
+          <div class="week-planner-title">
+            <span class="week-planner-icon">📆</span>
+            <div>
+              <div class="week-planner-label">Plan your week ${badge}</div>
+              <div class="week-planner-sub">${hasAdaptation ? `Adapted for: ${adaptation.context.slice(0,50)}${adaptation.context.length > 50 ? '…' : ''}` : 'Tell me your constraints — I will adapt your sessions'}</div>
+            </div>
+          </div>
+          <div class="week-planner-toggle">${state.plannerOpen ? '▲' : '▼'}</div>
+        </div>`;
+
+      if (state.plannerOpen) {
+        html += `<div class="week-planner-body">
+          <div class="planner-hint">Tap what applies this week, then describe anything specific below:</div>
+          <div class="constraint-chips">
+            ${CONSTRAINT_CHIPS.map(c => `<span class="constraint-chip${state.selectedConstraints.includes(c.id) ? ' selected' : ''}" onclick="toggleConstraint('${c.id}')">${c.label}</span>`).join('')}
+          </div>
+          <textarea class="planner-textarea" id="planner-note-input" placeholder="e.g. Flying to Zurich Friday afternoon, back Sunday evening. Office until 9pm Tuesday and Wednesday. Free Saturday morning before lunch." oninput="updatePlannerNote(this.value)">${state.plannerNote}</textarea>
+          <div class="planner-actions">
+            <button class="planner-adapt-btn" style="background:${phase.color};color:#000" onclick="runAdaptation()" ${state.loadingAdaptation ? 'disabled' : ''}>
+              ${state.loadingAdaptation ? '⏳ Adapting...' : hasAdaptation ? '🔄 Re-adapt week' : '✨ Adapt my week'}
+            </button>
+            ${(hasAdaptation || hasInput) ? `<button class="planner-reset-btn" onclick="resetAdaptation()">Reset</button>` : ''}
+          </div>
+          ${!state.apiKey ? `<div style="font-size:11px;color:#fb923c88;margin-top:8px">⚠️ Add your API key in Settings to enable AI adaptation</div>` : ''}
+        </div>`;
+      }
+
+      html += `</div>`;
+      return html;
     }
 
     function renderLogForm(dayIdx, key, phase) {
       const existing = state.sessionLogs[key] || {};
-      const rpeVals = [5, 6, 7, 8, 9, 10];
+      const rpeVals = [5,6,7,8,9,10];
 
-      return `
-        <div class="log-form" onclick="event.stopPropagation()">
-          <div class="log-form-title">📝 Log what you actually did</div>
-          <div class="log-fields">
-            <div class="log-field">
-              <label>Weight (kg)</label>
-              <input class="log-input" id="log-weight-${dayIdx}" type="number" step="0.5" placeholder="e.g. 65" value="${existing.weight || ""}">
-            </div>
-            <div class="log-field">
-              <label>Reps / Sets</label>
-              <input class="log-input" id="log-reps-${dayIdx}" type="text" placeholder="e.g. 3×8" value="${existing.reps || ""}">
-            </div>
-            <div class="log-field">
-              <label>Distance (km)</label>
-              <input class="log-input" id="log-distance-${dayIdx}" type="number" step="0.1" placeholder="e.g. 5.2" value="${existing.distance || ""}">
-            </div>
-            <div class="log-field">
-              <label>Time / Pace</label>
-              <input class="log-input" id="log-time-${dayIdx}" type="text" placeholder="e.g. 22:15" value="${existing.time || ""}">
-            </div>
-          </div>
-          <div class="log-field" style="margin-bottom:10px">
-            <label style="margin-bottom:6px;display:block">Effort (RPE)</label>
-            <div class="log-rpe" id="log-rpe-group-${dayIdx}">
-              ${rpeVals.map((v) => `<button type="button" class="rpe-btn${existing.rpe == v ? " selected" : ""}" onclick="selectRpe(${dayIdx},${v})" id="rpe-${dayIdx}-${v}">${v}</button>`).join("")}
-            </div>
-          </div>
-          <div class="log-field">
-            <label style="margin-bottom:4px;display:block">Notes — weights used, how it felt, what you modified</label>
-            <textarea class="log-textarea" id="log-note-${dayIdx}" placeholder="e.g. Squatted 65kg, felt solid. Cut last set short. Run felt easy at 5:10/km pace...">${existing.note || ""}</textarea>
-          </div>
-          <button class="log-save-btn" style="background:${phase.color};color:#000" onclick="saveLog(${dayIdx})">Save session details</button>
+      return `<div class="log-form" onclick="event.stopPropagation()">
+        <div class="log-form-title">📝 Log what you actually did</div>
+        <div class="log-fields">
+          <div class="log-field"><label>Weight (kg)</label><input class="log-input" id="log-weight-${dayIdx}" type="number" step="0.5" placeholder="e.g. 65" value="${existing.weight || ''}"></div>
+          <div class="log-field"><label>Reps / Sets</label><input class="log-input" id="log-reps-${dayIdx}" type="text" placeholder="e.g. 3×8" value="${existing.reps || ''}"></div>
+          <div class="log-field"><label>Distance (km)</label><input class="log-input" id="log-distance-${dayIdx}" type="number" step="0.1" placeholder="e.g. 5.2" value="${existing.distance || ''}"></div>
+          <div class="log-field"><label>Time / Pace</label><input class="log-input" id="log-time-${dayIdx}" type="text" placeholder="e.g. 22:15" value="${existing.time || ''}"></div>
         </div>
-      `;
+        <div class="log-field" style="margin-bottom:10px">
+          <label style="margin-bottom:6px;display:block">Effort (RPE)</label>
+          <div class="log-rpe" id="log-rpe-group-${dayIdx}">
+            ${rpeVals.map(v => `<button type="button" class="rpe-btn${existing.rpe == v ? ' selected' : ''}" onclick="selectRpe(${dayIdx},${v})" id="rpe-${dayIdx}-${v}">${v}</button>`).join('')}
+          </div>
+        </div>
+        <div class="log-field">
+          <label style="margin-bottom:4px;display:block">Notes — weights, how it felt, modifications</label>
+          <textarea class="log-textarea" id="log-note-${dayIdx}" placeholder="e.g. Squatted 65kg, felt solid. Run felt easy at 5:10/km...">${existing.note || ''}</textarea>
+        </div>
+        <button class="log-save-btn" style="background:${phase.color};color:#000" onclick="saveLog(${dayIdx})">Save session details</button>
+      </div>`;
     }
 
     function renderLogDisplay(log) {
       const metrics = formatLog(log);
-      return `
-        <div class="session-log-display">
-          <div class="session-log-header">📝 Session logged</div>
-          ${log.note ? `<div class="session-log-note">"${log.note}"</div>` : ""}
-          ${metrics ? `<div class="session-log-metrics">${metrics.split(" · ").map((m) => `<span class="metric-pill">${m}</span>`).join("")}</div>` : ""}
-          <button class="edit-log-btn" onclick="editLog(event, ${log._dayIdx})">Edit details</button>
-        </div>
-      `;
+      return `<div class="session-log-display">
+        <div class="session-log-header">📝 Session logged</div>
+        ${log.note ? `<div class="session-log-note">"${log.note}"</div>` : ''}
+        ${metrics ? `<div class="session-log-metrics">${metrics.split(' · ').map(m => `<span class="metric-pill">${m}</span>`).join('')}</div>` : ''}
+        <button class="edit-log-btn" onclick="editLog(event,${log._dayIdx})">Edit details</button>
+      </div>`;
     }
 
     function renderWeekView() {
       const phase = getPhase();
-      const weekDone = phase.weeks.filter((_, i) => state.completions[getDayKey(phase.id, state.weekOffset, i)] === "done").length;
-      const weekSkip = phase.weeks.filter((_, i) => state.completions[getDayKey(phase.id, state.weekOffset, i)] === "skipped").length;
+      const wk = getWeekKey();
+      const adaptation = state.weekAdaptations[wk];
+      const weekDone = phase.weeks.filter((_, i) => state.completions[getDayKey(phase.id,state.weekOffset,i)] === 'done').length;
+      const weekSkip = phase.weeks.filter((_, i) => state.completions[getDayKey(phase.id,state.weekOffset,i)] === 'skipped').length;
       const weekLogged = weekDone + weekSkip;
 
-      let html = `
-        <div class="week-nav">
-          <button class="week-nav-btn" onclick="changeWeek(-1)" ${state.weekOffset === 0 ? "disabled" : ""}>← Prev</button>
-          <div class="week-info">
-            <div class="week-label">${phase.label} · Week ${state.weekOffset + 1}</div>
-            <div class="week-sub">${phase.months}</div>
-            ${weekLogged > 0 ? `<div class="week-stats" style="color:${weekDone >= weekSkip ? "#4ade80" : "#fb923c"}">${weekDone} done · ${weekSkip} skipped</div>` : ""}
-          </div>
-          <button class="week-nav-btn" onclick="changeWeek(1)">Next →</button>
+      let html = `<div class="week-nav">
+        <button class="week-nav-btn" onclick="changeWeek(-1)" ${state.weekOffset===0 ? 'disabled' : ''}>← Prev</button>
+        <div class="week-info">
+          <div class="week-label">${phase.label} · Week ${state.weekOffset + 1}</div>
+          <div class="week-sub">${phase.months}</div>
+          ${weekLogged > 0 ? `<div class="week-stats" style="color:${weekDone >= weekSkip ? '#4ade80' : '#fb923c'}">${weekDone} done · ${weekSkip} skipped</div>` : ''}
         </div>
-      `;
+        <button class="week-nav-btn" onclick="changeWeek(1)">Next →</button>
+      </div>`;
+
+      html += renderWeekPlanner(phase);
+
+      if (adaptation) {
+        html += `<div class="adapted-banner" style="--phase-color-bg:${phase.color}12;--phase-color-border:${phase.color}33">
+          <div class="adapted-banner-text">
+            <div class="adapted-banner-label" style="color:${phase.color}">✨ Week adapted</div>
+            ${adaptation.context}
+          </div>
+          <button class="adapted-banner-reset" onclick="resetAdaptation()">Reset</button>
+        </div>`;
+      }
 
       phase.weeks.forEach((day, i) => {
         const key = getDayKey(phase.id, state.weekOffset, i);
@@ -1338,70 +693,69 @@
         const showLogForm = state.editingLog === i;
         const tc = TAG_COLORS[day.tag] || TAG_COLORS.recovery;
 
-        const cardBg = status === "done" ? `${phase.color}18` : status === "skipped" ? "#ff444412" : "#ffffff07";
-        const cardBorder = status === "done" ? `${phase.color}55` : status === "skipped" ? "#ff444433" : "#ffffff12";
-        const circleBg = status === "done" ? `${phase.color}33` : status === "skipped" ? "#ff444422" : "#ffffff0a";
-        const circleBorder = status === "done" ? phase.color : status === "skipped" ? "#ff4444" : "#ffffff14";
-        const circleIcon = status === "done" ? "✓" : status === "skipped" ? "✗" : day.icon;
-        const typeColor = status === "done" ? phase.color : status === "skipped" ? "#ff6666" : "#ffffffdd";
-        const canMark = !status && day.tag !== "recovery" && day.tag !== "flex";
+        const adaptedDay = adaptation?.sessions?.[i];
+        const isAdapted = adaptedDay?.adapted;
+        const displaySessions = isAdapted ? adaptedDay.sessions : day.sessions;
+        const displayType = isAdapted ? (adaptedDay.adaptedType || day.type) : day.type;
 
-        html += `
-          <div class="day-card" style="background:${cardBg};border-color:${cardBorder}" onclick="toggleDay(${i})">
-            <div class="day-card-header">
-              <div class="day-status-circle" style="background:${circleBg};border-color:${circleBorder}">${circleIcon}</div>
-              <div class="day-meta">
-                <div class="day-tags">
-                  <span class="day-label">${day.label}</span>
-                  <span class="tag-chip" style="background:${tc.bg};border-color:${tc.border};color:${tc.text}">${day.tag}</span>
-                  ${day.duration ? `<span class="duration-chip">⏱ ${day.duration}</span>` : ""}
-                  ${log ? `<span class="duration-chip" style="color:#4ade8088">📝 logged</span>` : ""}
-                </div>
-                <div class="day-type" style="color:${typeColor}">${day.type}</div>
+        const cardBg = status === 'done' ? `${phase.color}18` : status === 'skipped' ? '#ff444412' : '#ffffff07';
+        const cardBorder = status === 'done' ? `${phase.color}55` : status === 'skipped' ? '#ff444433' : isAdapted ? '#a78bfa33' : '#ffffff12';
+        const circleBg = status === 'done' ? `${phase.color}33` : status === 'skipped' ? '#ff444422' : '#ffffff0a';
+        const circleBorder = status === 'done' ? phase.color : status === 'skipped' ? '#ff4444' : '#ffffff14';
+        const circleIcon = status === 'done' ? '✓' : status === 'skipped' ? '✗' : day.icon;
+        const typeColor = status === 'done' ? phase.color : status === 'skipped' ? '#ff6666' : '#ffffffdd';
+        const canMark = !status && day.tag !== 'recovery' && day.tag !== 'flex';
+
+        html += `<div class="day-card" style="background:${cardBg};border-color:${cardBorder}" onclick="toggleDay(${i})">
+          <div class="day-card-header">
+            <div class="day-status-circle" style="background:${circleBg};border-color:${circleBorder}">${circleIcon}</div>
+            <div class="day-meta">
+              <div class="day-tags">
+                <span class="day-label">${day.label}</span>
+                <span class="tag-chip" style="background:${tc.bg};border-color:${tc.border};color:${tc.text}">${day.tag}</span>
+                ${day.duration && !isAdapted ? `<span class="duration-chip">⏱ ${day.duration}</span>` : ''}
+                ${isAdapted ? `<span class="adapted-chip">✨ adapted</span>` : ''}
+                ${log ? `<span class="duration-chip" style="color:#4ade8088">📝 logged</span>` : ''}
               </div>
-              <div class="expand-arrow">${isExp ? "▲" : "▼"}</div>
+              <div class="day-type" style="color:${typeColor}">${displayType}</div>
             </div>
-        `;
+            <div class="expand-arrow">${isExp ? '▲' : '▼'}</div>
+          </div>`;
 
         if (isExp) {
           html += `<div class="day-expanded" onclick="event.stopPropagation()">`;
 
-          day.sessions.forEach((s) => {
-            html += `<div class="session-item" style="border-color:${phase.color}44">${s}</div>`;
-          });
-
-          if (day.tsClass) {
-            html += `
-              <div class="ts-box">
-                <div class="ts-label">🏛 Third Space class alternative</div>
-                <div class="ts-name">${day.tsClass.name}</div>
-                <div class="ts-note">${day.tsClass.note}</div>
-              </div>
-            `;
+          if (isAdapted) {
+            html += `<div style="font-size:9px;color:#a78bfa88;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px">✨ Adapted session</div>`;
           }
 
-          if (showLogForm || (status === "done" && !log)) {
+          displaySessions.forEach(s => {
+            html += `<div class="session-item${isAdapted ? ' adapted' : ''}" style="border-color:${isAdapted ? '#a78bfa55' : phase.color+'44'}">${s}</div>`;
+          });
+
+          if (isAdapted) {
+            html += `<div class="adapted-note">Original: ${day.type}</div>`;
+          }
+
+          if (!isAdapted && day.tsClass) {
+            html += `<div class="ts-box"><div class="ts-label">🏛 Third Space class alternative</div><div class="ts-name">${day.tsClass.name}</div><div class="ts-note">${day.tsClass.note}</div></div>`;
+          }
+
+          if (showLogForm || (status === 'done' && !log)) {
             html += renderLogForm(i, key, phase);
-          } else if (status === "done" && log) {
-            html += renderLogDisplay({ ...log, _dayIdx: i });
+          } else if (status === 'done' && log) {
+            html += renderLogDisplay({...log, _dayIdx:i});
           }
 
           if (coach || isLoading) {
-            html += `
-              <div class="coach-box" style="background:${phase.color}12;border-color:${phase.color}33">
-                <div class="coach-label" style="color:${phase.color}">🤖 Coach</div>
-                <div class="coach-text">${isLoading ? "Thinking..." : coach}</div>
-              </div>
-            `;
+            html += `<div class="coach-box" style="background:${phase.color}12;border-color:${phase.color}33"><div class="coach-label" style="color:${phase.color}">🤖 Coach</div><div class="coach-text">${isLoading ? 'Thinking...' : coach}</div></div>`;
           }
 
           if (canMark) {
-            html += `
-              <div class="mark-btns">
-                <button class="mark-btn" style="border-color:${phase.color}66;color:${phase.color}" onclick="markSession(${i}, 'done')">✓ Done</button>
-                <button class="mark-btn" style="border-color:#ff444433;color:#ff6666" onclick="markSession(${i}, 'skipped')">✗ Skipped</button>
-              </div>
-            `;
+            html += `<div class="mark-btns">
+              <button class="mark-btn" style="border-color:${phase.color}66;color:${phase.color}" onclick="markSession(${i},'done')">✓ Done</button>
+              <button class="mark-btn" style="border-color:#ff444433;color:#ff6666" onclick="markSession(${i},'skipped')">✗ Skipped</button>
+            </div>`;
           }
 
           if (status) {
@@ -1414,107 +768,79 @@
         html += `</div>`;
       });
 
-      html += `
-        <div class="briefing-box">
-          <div class="briefing-header">
-            <div class="briefing-title">🤖 Weekly coaching</div>
-            <button class="briefing-btn" style="border-color:${phase.color}55;color:${phase.color}" onclick="fetchBriefing()" ${state.loadingBriefing ? "disabled" : ""}>
-              ${state.loadingBriefing ? "Generating..." : state.weeklyBriefing ? "Refresh" : "Generate"}
-            </button>
-          </div>
-          ${
-            state.weeklyBriefing
-              ? `<div class="briefing-text">${state.weeklyBriefing}</div>`
-              : `<div class="briefing-hint">${state.apiKey ? "Log sessions then tap Generate for personalised coaching based on your actual performance." : "Add API key in Settings to enable AI coaching."}</div>`
-          }
+      html += `<div class="briefing-box">
+        <div class="briefing-header">
+          <div class="briefing-title">🤖 Weekly coaching</div>
+          <button class="briefing-btn" style="border-color:${phase.color}55;color:${phase.color}" onclick="fetchBriefing()" ${state.loadingBriefing ? 'disabled' : ''}>
+            ${state.loadingBriefing ? 'Generating...' : state.weeklyBriefing ? 'Refresh' : 'Generate'}
+          </button>
         </div>
-      `;
+        ${state.weeklyBriefing ? `<div class="briefing-text">${state.weeklyBriefing}</div>` : `<div class="briefing-hint">${state.apiKey ? 'Log sessions then tap Generate for personalised coaching.' : 'Add API key in Settings to enable AI coaching.'}</div>`}
+      </div>`;
 
-      document.getElementById("content").innerHTML = html;
+      document.getElementById('content').innerHTML = html;
     }
 
     function renderPhaseView() {
       const phase = getPhase();
+      let html = `<div style="background:${phase.bg};border:1px solid ${phase.color}33;border-radius:14px;padding:20px;margin-bottom:16px">
+        <div style="font-size:10px;letter-spacing:4px;color:${phase.color};text-transform:uppercase;margin-bottom:6px;opacity:0.8">${phase.months}</div>
+        <div style="font-size:22px;font-weight:800;color:#fff;margin-bottom:4px">${phase.subtitle}</div>
+        <div style="font-size:12px;color:#ffffff88;font-style:italic;margin-bottom:12px">${phase.focus}</div>
+        <div style="font-size:13px;color:#ffffff66;line-height:1.7">${phase.description}</div>
+        <div class="event-chips">${phase.events.map(e => `<span class="event-chip" style="background:${phase.color}18;border-color:${phase.color}44;color:${phase.color}">${e}</span>`).join('')}</div>
+      </div><div class="section-title">Typical week structure</div>`;
 
-      let html = `
-        <div class="phase-header-card" style="background:${phase.bg};border-color:${phase.color}33">
-          <div style="font-size:10px;letter-spacing:4px;color:${phase.color};text-transform:uppercase;margin-bottom:6px;opacity:0.8">${phase.months}</div>
-          <div style="font-size:22px;font-weight:800;color:#fff;margin-bottom:4px">${phase.subtitle}</div>
-          <div style="font-size:12px;color:#ffffff88;font-style:italic;margin-bottom:12px">${phase.focus}</div>
-          <div style="font-size:13px;color:#ffffff66;line-height:1.7">${phase.description}</div>
-          <div class="event-chips">
-            ${phase.events.map((e) => `<span class="event-chip" style="background:${phase.color}18;border-color:${phase.color}44;color:${phase.color}">${e}</span>`).join("")}
-          </div>
-        </div>
-        <div class="section-title">Typical week structure</div>
-      `;
-
-      phase.weeks.forEach((day) => {
+      phase.weeks.forEach(day => {
         const tc = TAG_COLORS[day.tag] || TAG_COLORS.recovery;
-        html += `
-          <div style="background:#ffffff06;border:1px solid #ffffff10;border-radius:12px;padding:14px;margin-bottom:10px">
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:${day.sessions.length ? 10 : 0}px">
-              <span style="font-size:20px">${day.icon}</span>
-              <div style="flex:1">
-                <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:3px">
-                  <span style="font-size:10px;color:#ffffff44;font-weight:700;text-transform:uppercase;letter-spacing:2px">${day.label}</span>
-                  <span class="tag-chip" style="background:${tc.bg};border-color:${tc.border};color:${tc.text}">${day.tag}</span>
-                  ${day.duration ? `<span class="duration-chip">⏱ ${day.duration}</span>` : ""}
-                </div>
-                <div style="font-size:14px;font-weight:700;color:#ffffffcc">${day.type}</div>
+        html += `<div style="background:#ffffff06;border:1px solid #ffffff10;border-radius:12px;padding:14px;margin-bottom:10px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:${day.sessions.length ? 10 : 0}px">
+            <span style="font-size:20px">${day.icon}</span>
+            <div style="flex:1">
+              <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:3px">
+                <span style="font-size:10px;color:#ffffff44;font-weight:700;text-transform:uppercase;letter-spacing:2px">${day.label}</span>
+                <span class="tag-chip" style="background:${tc.bg};border-color:${tc.border};color:${tc.text}">${day.tag}</span>
+                ${day.duration ? `<span class="duration-chip">⏱ ${day.duration}</span>` : ''}
               </div>
+              <div style="font-size:14px;font-weight:700;color:#ffffffcc">${day.type}</div>
             </div>
-            ${day.sessions.map((s) => `<div class="session-item" style="border-color:${phase.color}44">${s}</div>`).join("")}
-            ${day.tsClass ? `<div class="ts-box"><div class="ts-label">🏛 Third Space</div><div class="ts-name">${day.tsClass.name}</div></div>` : ""}
           </div>
-        `;
+          ${day.sessions.map(s => `<div class="session-item" style="border-color:${phase.color}44">${s}</div>`).join('')}
+          ${day.tsClass ? `<div class="ts-box"><div class="ts-label">🏛 Third Space</div><div class="ts-name">${day.tsClass.name}</div></div>` : ''}
+        </div>`;
       });
 
-      document.getElementById("content").innerHTML = html;
+      document.getElementById('content').innerHTML = html;
     }
 
     function renderStatsView() {
-      const { done, skip, total, rate } = overallStats();
+      const {done,skip,total,rate} = overallStats();
       const logCount = Object.keys(state.sessionLogs).length;
 
-      let html = `
-        <div class="sub-tabs">
-          <button class="sub-tab ${state.statsSubTab === "overview" ? "active" : ""}" onclick="setStatsTab('overview')">Overview</button>
-          <button class="sub-tab ${state.statsSubTab === "log" ? "active" : ""}" onclick="setStatsTab('log')">Session Log ${logCount > 0 ? `(${logCount})` : ""}</button>
-        </div>
-      `;
+      let html = `<div class="sub-tabs">
+        <button class="sub-tab ${state.statsSubTab==='overview' ? 'active' : ''}" onclick="setStatsTab('overview')">Overview</button>
+        <button class="sub-tab ${state.statsSubTab==='log' ? 'active' : ''}" onclick="setStatsTab('log')">Session Log ${logCount > 0 ? `(${logCount})` : ''}</button>
+      </div>`;
 
-      if (state.statsSubTab === "overview") {
-        html += `
-          <div class="stat-grid">
-            <div class="stat-card"><div class="stat-value" style="color:#4ade80">${done}</div><div class="stat-label">Completed</div></div>
-            <div class="stat-card"><div class="stat-value" style="color:#f43f5e">${skip}</div><div class="stat-label">Skipped</div></div>
-            <div class="stat-card"><div class="stat-value" style="color:${rateColor(rate)}">${rate !== null ? rate + "%" : "–"}</div><div class="stat-label">Rate</div></div>
-          </div>
-          <div class="section-title">By phase</div>
-        `;
+      if (state.statsSubTab === 'overview') {
+        html += `<div class="stat-grid">
+          <div class="stat-card"><div class="stat-value" style="color:#4ade80">${done}</div><div class="stat-label">Completed</div></div>
+          <div class="stat-card"><div class="stat-value" style="color:#f43f5e">${skip}</div><div class="stat-label">Skipped</div></div>
+          <div class="stat-card"><div class="stat-value" style="color:${rateColor(rate)}">${rate !== null ? rate+'%' : '–'}</div><div class="stat-label">Rate</div></div>
+        </div><div class="section-title">By phase</div>`;
 
         let hasAny = false;
-        PHASES.forEach((p) => {
-          const pdone = Object.keys(state.completions).filter((k) => k.startsWith(p.id + ":") && state.completions[k] === "done").length;
-          const pskip = Object.keys(state.completions).filter((k) => k.startsWith(p.id + ":") && state.completions[k] === "skipped").length;
-          const ptotal = pdone + pskip;
-          if (!ptotal) return;
+        PHASES.forEach(p => {
+          const pd = Object.keys(state.completions).filter(k => k.startsWith(p.id + ':') && state.completions[k] === 'done').length;
+          const ps = Object.keys(state.completions).filter(k => k.startsWith(p.id + ':') && state.completions[k] === 'skipped').length;
+          const pt = pd + ps;
+          if (!pt) return;
           hasAny = true;
-          const pr = Math.round(pdone / ptotal * 100);
-
-          html += `
-            <div class="phase-stat" style="border-color:${p.color}22">
-              <div class="phase-stat-header">
-                <div>
-                  <div class="phase-stat-name" style="color:${p.color}">${p.label}</div>
-                  <div class="phase-stat-detail">${pdone} done · ${pskip} skipped</div>
-                </div>
-                <div class="phase-stat-rate" style="color:${rateColor(pr)}">${pr}%</div>
-              </div>
-              <div class="progress-bar"><div class="progress-fill" style="width:${pr}%;background:${rateColor(pr)}"></div></div>
-            </div>
-          `;
+          const pr = Math.round(pd / pt * 100);
+          html += `<div class="phase-stat" style="border-color:${p.color}22">
+            <div class="phase-stat-header"><div><div class="phase-stat-name" style="color:${p.color}">${p.label}</div><div class="phase-stat-detail">${pd} done · ${ps} skipped</div></div><div class="phase-stat-rate" style="color:${rateColor(pr)}">${pr}%</div></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:${pr}%;background:${rateColor(pr)}"></div></div>
+          </div>`;
         });
 
         if (!hasAny) {
@@ -1526,98 +852,68 @@
         }
       } else {
         const logEntries = Object.entries(state.sessionLogs).reverse();
-
         if (!logEntries.length) {
-          html += `
-            <div class="empty-state">
-              <div style="font-size:40px;margin-bottom:12px">📝</div>
-              <div style="font-size:14px;color:#ffffff55;margin-bottom:8px">No session details logged yet</div>
-              <div style="font-size:12px;color:#ffffff33">Mark a session as Done and fill in your details — weights, reps, pace, notes.</div>
-            </div>
-          `;
+          html += `<div class="empty-state"><div style="font-size:40px;margin-bottom:12px">📝</div><div style="font-size:14px;color:#ffffff55;margin-bottom:8px">No session details logged yet</div></div>`;
         } else {
-          html += `<div class="section-title">${logEntries.length} session${logEntries.length !== 1 ? "s" : ""} logged</div>`;
-
-          logEntries.forEach(([key, log]) => {
-            const phaseId = key.split(":")[0];
-            const dIdx = parseInt(key.split(":d")[1], 10);
-            const phase = PHASES.find((p) => p.id === phaseId);
-            const day = phase?.weeks[dIdx];
+          html += `<div class="section-title">${logEntries.length} session${logEntries.length !== 1 ? 's' : ''} logged</div>`;
+          logEntries.forEach(([key,log]) => {
+            const phaseId = key.split(':')[0];
+            const dIdx = parseInt(key.split(':d')[1], 10);
+            const p = PHASES.find(ph => ph.id === phaseId);
+            const day = p?.weeks[dIdx];
             const metrics = formatLog(log);
-            const phaseColor = phase?.color || "#ffffff44";
-
-            html += `
-              <div class="log-entry">
-                <div class="log-entry-header">
-                  <div>
-                    <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:${phaseColor}">${phaseId.toUpperCase()}</span>
-                    <div class="log-entry-type">${day?.icon || ""} ${day?.type || "Session"}</div>
-                  </div>
-                  <div class="log-entry-date">${log.savedAt || ""}</div>
-                </div>
-                ${log.note ? `<div class="log-entry-note">"${log.note}"</div>` : ""}
-                ${metrics ? `<div class="log-entry-metrics">${metrics.split(" · ").map((m) => `<span class="metric-pill">${m}</span>`).join("")}</div>` : ""}
-              </div>
-            `;
+            html += `<div class="log-entry">
+              <div class="log-entry-header"><div><span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:${p?.color || '#fff'}">${phaseId.toUpperCase()}</span><div class="log-entry-type">${day?.icon || ''} ${day?.type || 'Session'}</div></div><div class="log-entry-date">${log.savedAt || ''}</div></div>
+              ${log.note ? `<div class="log-entry-note">"${log.note}"</div>` : ''}
+              ${metrics ? `<div class="log-entry-metrics">${metrics.split(' · ').map(m => `<span class="metric-pill">${m}</span>`).join('')}</div>` : ''}
+            </div>`;
           });
         }
       }
 
-      document.getElementById("content").innerHTML = html;
+      document.getElementById('content').innerHTML = html;
     }
 
     function renderSettingsView() {
-      const { done, skip } = overallStats();
-
-      document.getElementById("content").innerHTML = `
-        <div class="settings-section">
-          <div class="settings-title">AI Coaching</div>
-          <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:10px">
-            <div>
-              <div class="settings-row-label">Anthropic API Key</div>
-              <div class="settings-row-sub">${state.apiKey ? "✓ Key saved — AI coaching active" : "No key — coaching disabled"}</div>
-            </div>
-            <input type="password" id="settings-api-input" class="settings-input" placeholder="sk-ant-api03-..." value="${state.apiKey}" autocomplete="off" spellcheck="false" style="width:100%">
-            <div style="display:flex;gap:8px;width:100%">
-              <button class="settings-save-btn" onclick="updateApiKey()" style="flex:1">Save Key</button>
-              ${state.apiKey ? `<button class="settings-save-btn" onclick="clearApiKey()" style="background:#ff4444;flex:1">Remove</button>` : ""}
-            </div>
-            <div id="api-status" class="api-status"></div>
+      const {done,skip} = overallStats();
+      document.getElementById('content').innerHTML = `<div class="settings-section">
+        <div class="settings-title">AI Coaching</div>
+        <div class="settings-row" style="flex-direction:column;align-items:flex-start;gap:10px">
+          <div><div class="settings-row-label">Anthropic API Key</div><div class="settings-row-sub">${state.apiKey ? '✓ Key saved — AI features active' : 'No key — AI features disabled'}</div></div>
+          <input type="password" id="settings-api-input" class="settings-input" placeholder="sk-ant-api03-..." value="${state.apiKey}" autocomplete="off" spellcheck="false" style="width:100%">
+          <div style="display:flex;gap:8px;width:100%">
+            <button class="settings-save-btn" onclick="updateApiKey()" style="flex:1">Save Key</button>
+            ${state.apiKey ? `<button class="settings-save-btn" onclick="clearApiKey()" style="background:#ff4444;flex:1">Remove</button>` : ''}
           </div>
+          <div id="api-status" class="api-status"></div>
         </div>
+      </div>
 
-        <div class="settings-section">
-          <div class="settings-title">Data</div>
-          <div class="settings-row">
-            <div>
-              <div class="settings-row-label">Sessions logged</div>
-              <div class="settings-row-sub">${done} completed · ${skip} skipped · ${Object.keys(state.sessionLogs).length} with detail notes</div>
-            </div>
-          </div>
-          ${(done + skip) > 0 ? `<button class="reset-btn" onclick="resetAll()">Reset all session data</button>` : ""}
-        </div>
+      <div class="settings-section">
+        <div class="settings-title">Data</div>
+        <div class="settings-row"><div><div class="settings-row-label">Sessions logged</div><div class="settings-row-sub">${done} completed · ${skip} skipped · ${Object.keys(state.sessionLogs).length} with notes · ${Object.keys(state.weekAdaptations).length} weeks adapted</div></div></div>
+        ${(done+skip) > 0 ? `<button class="reset-btn" onclick="resetAll()">Reset all session data</button>` : ''}
+      </div>
 
-        <div class="settings-section">
-          <div class="settings-title">How to update this plan</div>
-          <div style="background:#ffffff06;border:1px solid #ffffff12;border-radius:12px;padding:16px;font-size:13px;color:#ffffff66;line-height:1.8">
-            <strong style="color:#ffffffcc">To tweak sessions or phases:</strong><br>
-            1. Go to claude.ai and open the conversation where this was built<br>
-            2. Paste the HTML file and describe your change in plain English<br>
-            3. Download the new file, rename to index.html<br>
-            4. Go to GitHub repo → click index.html → pencil icon → paste → commit<br><br>
-            <strong style="color:#ffffffcc">Your logged data is safe:</strong> it lives in Safari's localStorage on this device, not in the HTML file. Updating the code never erases your session history.
-          </div>
+      <div class="settings-section">
+        <div class="settings-title">How to update this plan</div>
+        <div style="background:#ffffff06;border:1px solid #ffffff12;border-radius:12px;padding:16px;font-size:13px;color:#ffffff66;line-height:1.8">
+          <strong style="color:#ffffffcc">To tweak sessions or phases:</strong><br>
+          1. Go to claude.ai and open the conversation where this was built<br>
+          2. Paste the HTML file and describe your change in plain English<br>
+          3. Download the new file, rename to index.html<br>
+          4. Go to GitHub repo → click index.html → pencil → paste → commit<br><br>
+          <strong style="color:#ffffffcc">Your data is safe:</strong> session logs, completions and week adaptations all live in Safari's localStorage on this device — never in the HTML file.
         </div>
-      `;
+      </div>`;
     }
 
     function render() {
       updateHeader();
-
-      if (state.currentView === "week") renderWeekView();
-      else if (state.currentView === "phase") renderPhaseView();
-      else if (state.currentView === "stats") renderStatsView();
-      else if (state.currentView === "settings") renderSettingsView();
+      if (state.currentView === 'week') renderWeekView();
+      else if (state.currentView === 'phase') renderPhaseView();
+      else if (state.currentView === 'stats') renderStatsView();
+      else if (state.currentView === 'settings') renderSettingsView();
     }
 
     function selectPhase(idx) {
@@ -1625,7 +921,9 @@
       state.weekOffset = 0;
       state.expandedDay = null;
       state.editingLog = null;
-      state.weeklyBriefing = "";
+      state.weeklyBriefing = '';
+      state.selectedConstraints = [];
+      state.plannerNote = '';
       render();
     }
 
@@ -1640,7 +938,9 @@
       state.weekOffset = Math.max(0, state.weekOffset + dir);
       state.expandedDay = null;
       state.editingLog = null;
-      state.weeklyBriefing = "";
+      state.weeklyBriefing = '';
+      state.selectedConstraints = [];
+      state.plannerNote = '';
       render();
     }
 
@@ -1649,21 +949,82 @@
       renderStatsView();
     }
 
+    function togglePlanner() {
+      state.plannerOpen = !state.plannerOpen;
+      renderWeekView();
+    }
+
+    function toggleConstraint(id) {
+      const idx = state.selectedConstraints.indexOf(id);
+      if (idx > -1) state.selectedConstraints.splice(idx, 1);
+      else state.selectedConstraints.push(id);
+      renderWeekView();
+    }
+
+    function updatePlannerNote(val) {
+      state.plannerNote = val;
+    }
+
+    async function runAdaptation() {
+      if (!state.apiKey) {
+        alert('Add your API key in Settings to enable AI week adaptation.');
+        return;
+      }
+
+      const context = [
+        state.selectedConstraints.map(id => CONSTRAINT_CHIPS.find(c => c.id === id)?.label || id).join(', '),
+        state.plannerNote.trim()
+      ].filter(Boolean).join('. ');
+
+      if (!context) {
+        alert('Please select at least one constraint or describe your week first.');
+        return;
+      }
+
+      state.loadingAdaptation = true;
+      render();
+
+      const raw = await adaptWeek();
+      if (raw) {
+        const phase = getPhase();
+        const parsed = parseAdaptation(raw, phase);
+        const wk = getWeekKey();
+        state.weekAdaptations[wk] = {
+          sessions: parsed,
+          context,
+          generatedAt: new Date().toLocaleDateString('en-GB', {day:'numeric', month:'short'})
+        };
+        save();
+      }
+
+      state.loadingAdaptation = false;
+      state.plannerOpen = false;
+      render();
+    }
+
+    function resetAdaptation() {
+      const wk = getWeekKey();
+      delete state.weekAdaptations[wk];
+      state.selectedConstraints = [];
+      state.plannerNote = '';
+      save();
+      render();
+    }
+
     function toggleDay(i) {
       state.expandedDay = state.expandedDay === i ? null : i;
       if (state.expandedDay !== i) state.editingLog = null;
       render();
-
       setTimeout(() => {
-        const cards = document.querySelectorAll(".day-card");
-        if (cards[i]) cards[i].scrollIntoView({ behavior: "smooth", block: "nearest" });
+        const cards = document.querySelectorAll('.day-card');
+        if (cards[i]) cards[i].scrollIntoView({behavior:'smooth',block:'nearest'});
       }, 50);
     }
 
     function selectRpe(dayIdx, val) {
-      document.querySelectorAll(`#log-rpe-group-${dayIdx} .rpe-btn`).forEach((b) => b.classList.remove("selected"));
+      document.querySelectorAll(`#log-rpe-group-${dayIdx} .rpe-btn`).forEach(b => b.classList.remove('selected'));
       const btn = document.getElementById(`rpe-${dayIdx}-${val}`);
-      if (btn) btn.classList.add("selected");
+      if (btn) btn.classList.add('selected');
     }
 
     function editLog(e, dayIdx) {
@@ -1682,29 +1043,17 @@
       const note = document.getElementById(`log-note-${dayIdx}`)?.value.trim();
       const selectedRpe = document.querySelector(`#log-rpe-group-${dayIdx} .rpe-btn.selected`);
       const rpe = selectedRpe ? selectedRpe.textContent : null;
+      const dateStr = new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'});
 
-      const now = new Date();
-      const dateStr = now.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
-
-      state.sessionLogs[key] = {
-        weight: weight || null,
-        reps: reps || null,
-        distance: distance || null,
-        time: time || null,
-        rpe: rpe || null,
-        note: note || null,
-        savedAt: dateStr
-      };
-
+      state.sessionLogs[key] = {weight:weight||null,reps:reps||null,distance:distance||null,time:time||null,rpe:rpe||null,note:note||null,savedAt:dateStr};
       state.editingLog = null;
       save();
 
-      if (state.apiKey && state.completions[key] === "done") {
+      if (state.apiKey && state.completions[key] === 'done') {
         const day = phase.weeks[dayIdx];
         state.loadingCoach = key;
         render();
-
-        getCoaching(day.type, false, state.sessionLogs[key]).then((msg) => {
+        getCoaching(day.type,false,state.sessionLogs[key]).then(msg => {
           if (msg) {
             state.coachMsgs[key] = msg;
             save();
@@ -1721,15 +1070,14 @@
       const phase = getPhase();
       const key = getDayKey(phase.id, state.weekOffset, dayIdx);
       const day = phase.weeks[dayIdx];
-
       state.completions[key] = status;
-      if (status === "done") state.editingLog = dayIdx;
+      if (status === 'done') state.editingLog = dayIdx;
       state.loadingCoach = key;
       save();
       render();
 
       if (state.apiKey) {
-        const msg = await getCoaching(day.type, status === "skipped", null);
+        const msg = await getCoaching(day.type, status === 'skipped', null);
         if (msg) {
           state.coachMsgs[key] = msg;
           save();
@@ -1753,10 +1101,9 @@
 
     async function fetchBriefing() {
       if (!state.apiKey) {
-        alert("Add your API key in Settings to enable AI coaching.");
+        alert('Add your API key in Settings to enable AI coaching.');
         return;
       }
-
       state.loadingBriefing = true;
       render();
       state.weeklyBriefing = await getWeeklyBriefing();
@@ -1765,59 +1112,53 @@
     }
 
     function resetAll() {
-      if (!confirm("Reset all session data and logs? This cannot be undone.")) return;
-
+      if (!confirm('Reset all data? This cannot be undone.')) return;
       state.completions = {};
       state.coachMsgs = {};
       state.sessionLogs = {};
-      state.weeklyBriefing = "";
-
-      localStorage.removeItem("tp_completions");
-      localStorage.removeItem("tp_coachMsgs");
-      localStorage.removeItem("tp_sessionLogs");
-
+      state.weekAdaptations = {};
+      state.weeklyBriefing = '';
+      localStorage.removeItem('tp_completions');
+      localStorage.removeItem('tp_coachMsgs');
+      localStorage.removeItem('tp_sessionLogs');
+      localStorage.removeItem('tp_weekAdaptations');
       render();
     }
 
     function updateApiKey() {
-      const val = document.getElementById("settings-api-input").value.trim();
-      const statusEl = document.getElementById("api-status");
-
+      const val = document.getElementById('settings-api-input').value.trim();
+      const statusEl = document.getElementById('api-status');
       if (!val) {
-        statusEl.textContent = "Please enter a key.";
+        statusEl.textContent = 'Please enter a key.';
         return;
       }
-
-      if (!val.startsWith("sk-ant-")) {
-        statusEl.textContent = "Key should start with sk-ant-";
+      if (!val.startsWith('sk-ant-')) {
+        statusEl.textContent = 'Key should start with sk-ant-';
         return;
       }
-
       state.apiKey = val;
-      localStorage.setItem("tp_apiKey", val);
-      statusEl.textContent = "✓ Key saved";
-      statusEl.style.color = "#4ade80";
+      localStorage.setItem('tp_apiKey', val);
+      statusEl.textContent = '✓ Key saved';
+      statusEl.style.color = '#4ade80';
       setTimeout(() => renderSettingsView(), 800);
     }
 
     function clearApiKey() {
-      state.apiKey = "";
-      localStorage.removeItem("tp_apiKey");
+      state.apiKey = '';
+      localStorage.removeItem('tp_apiKey');
       renderSettingsView();
     }
 
     function saveApiKey() {
-      const val = document.getElementById("api-key-input").value.trim();
-      if (val && !val.startsWith("sk-ant-")) {
-        alert("API key should start with sk-ant-");
+      const val = document.getElementById('api-key-input').value.trim();
+      if (val && !val.startsWith('sk-ant-')) {
+        alert('Key should start with sk-ant-');
         return;
       }
-
       if (val) {
         state.apiKey = val;
-        localStorage.setItem("tp_apiKey", val);
+        localStorage.setItem('tp_apiKey', val);
       }
-
       startApp();
     }
 
@@ -1826,22 +1167,21 @@
     }
 
     function startApp() {
-      document.getElementById("setup-screen").classList.add("hidden");
-      document.getElementById("app").classList.remove("hidden");
+      document.getElementById('setup-screen').classList.add('hidden');
+      document.getElementById('app').classList.remove('hidden');
       render();
     }
 
-    window.addEventListener("DOMContentLoaded", () => {
+    window.addEventListener('DOMContentLoaded', () => {
       load();
-      const { phaseId, weekOffset } = getCurrentPhaseAndWeek();
-      const idx = PHASES.findIndex((p) => p.id === phaseId);
+      const {phaseId, weekOffset} = getCurrentPhaseAndWeek();
+      const idx = PHASES.findIndex(p => p.id === phaseId);
       state.activePhaseIdx = idx >= 0 ? idx : 0;
       state.weekOffset = weekOffset;
-
-      const hasVisited = localStorage.getItem("tp_visited");
+      const hasVisited = localStorage.getItem('tp_visited');
       if (!hasVisited) {
-        localStorage.setItem("tp_visited", "1");
-        document.getElementById("setup-screen").classList.remove("hidden");
+        localStorage.setItem('tp_visited','1');
+        document.getElementById('setup-screen').classList.remove('hidden');
       } else {
         startApp();
       }
@@ -1863,6 +1203,11 @@
     window.selectRpe = selectRpe;
     window.editLog = editLog;
     window.setStatsTab = setStatsTab;
+    window.togglePlanner = togglePlanner;
+    window.toggleConstraint = toggleConstraint;
+    window.updatePlannerNote = updatePlannerNote;
+    window.runAdaptation = runAdaptation;
+    window.resetAdaptation = resetAdaptation;
   </script>
 </body>
 </html>
